@@ -1,0 +1,76 @@
+
+PacManAtlas.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Ghost01
+  rotate: false
+  xy: 2, 2
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+Ghost02
+  rotate: false
+  xy: 804, 981
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+Ghost03
+  rotate: false
+  xy: 704, 515
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+Ghost04
+  rotate: false
+  xy: 804, 997
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+PacMan01
+  rotate: false
+  xy: 704, 500
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+PacMan02
+  rotate: false
+  xy: 18, 3
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+PacMan03
+  rotate: false
+  xy: 820, 998
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+cereza
+  rotate: false
+  xy: 720, 517
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+fondo
+  rotate: false
+  xy: 2, 531
+  size: 800, 480
+  orig: 800, 480
+  offset: 0, 0
+  index: -1
+paredRoja
+  rotate: false
+  xy: 2, 18
+  size: 700, 511
+  orig: 700, 511
+  offset: 0, 0
+  index: -1

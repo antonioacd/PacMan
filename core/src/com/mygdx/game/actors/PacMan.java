@@ -94,19 +94,16 @@ public class PacMan extends Actor {
 
         switch (direccion) {
             case -1:
-                this.body.setLinearVelocity(-1f, 0f);
+                this.body.setLinearVelocity(-5f, 0f);
                 break;
             case 1:
-                this.body.setLinearVelocity(1f, 0f);
+                this.body.setLinearVelocity(5f, 0f);
                 break;
             case 0:
-                this.body.setLinearVelocity(0f, -1f);
+                this.body.setLinearVelocity(0f, -5f);
                 break;
             case 2:
-                this.body.setLinearVelocity(0f, 1f);
-                break;
-            case 4:
-                this.body.setLinearVelocity(0f, 0f);
+                this.body.setLinearVelocity(0f, 5f);
                 break;
         }
 

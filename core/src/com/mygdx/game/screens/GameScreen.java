@@ -1,5 +1,6 @@
 package com.mygdx.game.screens;
 
+import static com.mygdx.game.extra.Utils.USER_EXTERIOR_WALLS;
 import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
 import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
 
@@ -10,7 +11,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -19,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.actors.PacMan;
+import com.mygdx.game.actors.Walls;
 
 public class GameScreen  extends BaseScreen {
 
@@ -32,6 +37,9 @@ public class GameScreen  extends BaseScreen {
     //Depuración
     private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera ortCamera;
+
+    Walls wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18, wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36, wall37, wall38, wall39, wall40, wall41, wall42;
+
 
     public GameScreen(MainGame mainGame) {
         super(mainGame);
@@ -71,6 +79,54 @@ public class GameScreen  extends BaseScreen {
         this.stage.addActor(this.pacMan);
     }
 
+    private void addFloor() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+        body.setUserData(USER_EXTERIOR_WALLS);
+
+        EdgeShape edge = new EdgeShape();
+        edge.set(0,0f,WORLD_WIDTH,0f);
+        body.createFixture(edge, 8);
+        edge.dispose();
+    }
+
+    public void addRoof(){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+        body.setUserData(USER_EXTERIOR_WALLS);
+
+        EdgeShape edge = new EdgeShape();
+        edge.set(0,WORLD_HEIGHT,WORLD_WIDTH,WORLD_HEIGHT);
+        body.createFixture(edge, 8);
+        edge.dispose();
+    }
+
+    public void addLeftWall(){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+        body.setUserData(USER_EXTERIOR_WALLS);
+
+        EdgeShape edge = new EdgeShape();
+        edge.set(0f,WORLD_HEIGHT,0f,0);
+        body.createFixture(edge, 8);
+        edge.dispose();
+    }
+
+    public void addRightWall(){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+        body.setUserData(USER_EXTERIOR_WALLS);
+
+        EdgeShape edge = new EdgeShape();
+        edge.set(WORLD_WIDTH,WORLD_HEIGHT,WORLD_WIDTH,0);
+        body.createFixture(edge, 8);
+        edge.dispose();
+    }
+
     public void getDireccion(){
 
         this.stage.addListener(new InputListener(){
@@ -81,47 +137,18 @@ public class GameScreen  extends BaseScreen {
                 switch (keycode) {
                     case Input.Keys.LEFT:
                         pacMan.setDireccion(-1);
-                        pacMan.setRotation(180);
-                        System.err.println("Izquierda pulsada");
                         break;
                     case Input.Keys.RIGHT:
                         pacMan.setDireccion(1);
-                        System.err.println("Derecha pulsada");
                         break;
                     case Input.Keys.DOWN:
                         pacMan.setDireccion(0);
-                        System.err.println("Abajo pulsado");
                         break;
                     case Input.Keys.UP:
                         pacMan.setDireccion(2);
-                        System.err.println("Arriba pulsada");
                         break;
                 }
 
-                return true;
-            }
-
-            @Override
-            public boolean keyUp(InputEvent event, int keycode) {
-
-                switch (keycode) {
-                    case Input.Keys.LEFT:
-                        pacMan.setDireccion(4);
-                        System.err.println("Izquierda pulsada");
-                        break;
-                    case Input.Keys.RIGHT:
-                        pacMan.setDireccion(4);
-                        System.err.println("Derecha pulsada");
-                        break;
-                    case Input.Keys.DOWN:
-                        pacMan.setDireccion(4);
-                        System.err.println("Abajo pulsado");
-                        break;
-                    case Input.Keys.UP:
-                        pacMan.setDireccion(4);
-                        System.err.println("Arriba pulsada");
-                        break;
-                }
                 return true;
             }
         });
@@ -149,10 +176,158 @@ public class GameScreen  extends BaseScreen {
         addBackground();
         addPacMan();
         getDireccion();
+        addFloor();
+        addRoof();
+        addLeftWall();
+        addRightWall();
 
-        /*TextureRegion wall01 = mainGame.assetManager.getPipeDownTR();
-        this.pipes = new Pipes(this.world, pipeTRDown, new Vector2(3.75f,2f));
-        this.stage.addActor(this.pipes);*/
+        TextureRegion wall01 = mainGame.assetManager.getWall();
+        this.wall01 = new Walls(this.world, wall01, new Vector2(0.55f,2.4f), 0.1f,1.95f);
+        this.stage.addActor(this.wall01);
+
+        TextureRegion wall02 = mainGame.assetManager.getWall();
+        this.wall02 = new Walls(this.world, wall02, new Vector2(7.45f,2.4f), 0.1f,1.95f);
+        this.stage.addActor(this.wall02);
+
+        TextureRegion wall03 = mainGame.assetManager.getWall();
+        this.wall03 = new Walls(this.world, wall03, new Vector2(4f,4.8f), 0.1f,1f);
+        this.stage.addActor(this.wall03);
+
+        TextureRegion wall04 = mainGame.assetManager.getWall();
+        this.wall04 = new Walls(this.world, wall04, new Vector2(4f,0f), 0.1f,1f);
+        this.stage.addActor(this.wall04);
+
+        TextureRegion wall05 = mainGame.assetManager.getWall();
+        this.wall05 = new Walls(this.world, wall05, new Vector2(1.20f,2.4f), 0.1f,0.5f);
+        this.stage.addActor(this.wall05);
+
+        TextureRegion wall06 = mainGame.assetManager.getWall();
+        this.wall06 = new Walls(this.world, wall06, new Vector2(1.20f,3.9f), 0.1f,0.45f);
+        this.stage.addActor(this.wall06);
+
+        TextureRegion wall07 = mainGame.assetManager.getWall();
+        this.wall07 = new Walls(this.world, wall07, new Vector2(1.20f,0.9f), 0.1f,0.45f);
+        this.stage.addActor(this.wall07);
+
+        TextureRegion wall08 = mainGame.assetManager.getWall();
+        this.wall08 = new Walls(this.world, wall08, new Vector2(6.8f,2.4f), 0.1f,0.5f);
+        this.stage.addActor(this.wall08);
+
+        TextureRegion wall09 = mainGame.assetManager.getWall();
+        this.wall09 = new Walls(this.world, wall09, new Vector2(6.8f,3.9f), 0.1f,0.45f);
+        this.stage.addActor(this.wall09);
+
+        TextureRegion wall10 = mainGame.assetManager.getWall();
+        this.wall10 = new Walls(this.world, wall10, new Vector2(6.8f,0.9f), 0.1f,0.45f);
+        this.stage.addActor(this.wall10);
+
+        TextureRegion wall11 = mainGame.assetManager.getWall();
+        this.wall11 = new Walls(this.world, wall11, new Vector2(1.75f,2.4f), 0.45f,0.1f);
+        this.stage.addActor(this.wall11);
+
+        TextureRegion wall12 = mainGame.assetManager.getWall();
+        this.wall12 = new Walls(this.world, wall12, new Vector2(1.75f,3.9f), 0.45f,0.1f);
+        this.stage.addActor(this.wall12);
+
+        TextureRegion wall13 = mainGame.assetManager.getWall();
+        this.wall13 = new Walls(this.world, wall13, new Vector2(1.75f,0.9f), 0.45f,0.1f);
+        this.stage.addActor(this.wall13);
+
+        TextureRegion wall14 = mainGame.assetManager.getWall();
+        this.wall14 = new Walls(this.world, wall14, new Vector2(6.25f,2.4f), 0.45f,0.1f);
+        this.stage.addActor(this.wall14);
+
+        TextureRegion wall15 = mainGame.assetManager.getWall();
+        this.wall15 = new Walls(this.world, wall15, new Vector2(6.25f,3.9f), 0.45f,0.1f);
+        this.stage.addActor(this.wall15);
+
+        TextureRegion wall16 = mainGame.assetManager.getWall();
+        this.wall16 = new Walls(this.world, wall16, new Vector2(6.25f,0.9f), 0.45f,0.1f);
+        this.stage.addActor(this.wall16);
+
+        TextureRegion wall17 = mainGame.assetManager.getWall();
+        this.wall17 = new Walls(this.world, wall17, new Vector2(3.30f,3.9f), 0.60f,0.1f);
+        this.stage.addActor(this.wall17);
+
+        TextureRegion wall18 = mainGame.assetManager.getWall();
+        this.wall18 = new Walls(this.world, wall18, new Vector2(4.70f,3.9f), 0.60f,0.1f);
+        this.stage.addActor(this.wall18);
+
+        TextureRegion wall19 = mainGame.assetManager.getWall();
+        this.wall19 = new Walls(this.world, wall19, new Vector2(3.30f,0.9f), 0.60f,0.1f);
+        this.stage.addActor(this.wall19);
+
+        TextureRegion wall20 = mainGame.assetManager.getWall();
+        this.wall20 = new Walls(this.world, wall20, new Vector2(4.70f,0.9f), 0.60f,0.1f);
+        this.stage.addActor(this.wall20);
+
+        TextureRegion wall21 = mainGame.assetManager.getWall();
+        this.wall21 = new Walls(this.world, wall21, new Vector2(2.6f,4.65f), 0.85f,0.2f);
+        this.stage.addActor(this.wall21);
+
+        TextureRegion wall22 = mainGame.assetManager.getWall();
+        this.wall22 = new Walls(this.world, wall22, new Vector2(2.6f,0.12f), 0.85f,0.2f);
+        this.stage.addActor(this.wall22);
+
+        TextureRegion wall23 = mainGame.assetManager.getWall();
+        this.wall23 = new Walls(this.world, wall23, new Vector2(5.4f,0.12f), 0.85f,0.2f);
+        this.stage.addActor(this.wall23);
+
+        TextureRegion wall24 = mainGame.assetManager.getWall();
+        this.wall24 = new Walls(this.world, wall24, new Vector2(5.4f,4.65f), 0.85f,0.2f);
+        this.stage.addActor(this.wall24);
+
+        TextureRegion wall25 = mainGame.assetManager.getWall();
+        this.wall25 = new Walls(this.world, wall25, new Vector2(2.30f,3.15f), 0.5f,0.2f);
+        this.stage.addActor(this.wall25);
+
+        TextureRegion wall26 = mainGame.assetManager.getWall();
+        this.wall26 = new Walls(this.world, wall26, new Vector2(2.30f,1.65f), 0.5f,0.2f);
+        this.stage.addActor(this.wall26);
+
+        TextureRegion wall27 = mainGame.assetManager.getWall();
+        this.wall27 = new Walls(this.world, wall27, new Vector2(5.70f,3.15f), 0.5f,0.2f);
+        this.stage.addActor(this.wall27);
+
+        TextureRegion wall28 = mainGame.assetManager.getWall();
+        this.wall28 = new Walls(this.world, wall28, new Vector2(5.70f,1.65f), 0.5f,0.2f);
+        this.stage.addActor(this.wall28);
+
+        TextureRegion wall29 = mainGame.assetManager.getWall();
+        this.wall29 = new Walls(this.world, wall29, new Vector2(4f,2.1f), 0.65f,0.05f);
+        this.stage.addActor(this.wall29);
+
+        TextureRegion wall30 = mainGame.assetManager.getWall();
+        this.wall30 = new Walls(this.world, wall30, new Vector2(3.30f,2.35f), 0.05f,0.3f);
+        this.stage.addActor(this.wall30);
+
+        TextureRegion wall31 = mainGame.assetManager.getWall();
+        this.wall31 = new Walls(this.world, wall31, new Vector2(4.7f,2.35f), 0.05f,0.3f);
+        this.stage.addActor(this.wall31);
+
+        TextureRegion wall32 = mainGame.assetManager.getWall();
+        this.wall32 = new Walls(this.world, wall32, new Vector2(3.52f,2.7f), 0.27f,0.05f);
+        this.stage.addActor(this.wall32);
+
+        TextureRegion wall33 = mainGame.assetManager.getWall();
+        this.wall33 = new Walls(this.world, wall33, new Vector2(4.48f,2.7f), 0.27f,0.05f);
+        this.stage.addActor(this.wall33);
+
+        TextureRegion wall34 = mainGame.assetManager.getWall();
+        this.wall34 = new Walls(this.world, wall34, new Vector2(2.95f,2.4f), 0.30f,0.1f);
+        this.stage.addActor(this.wall34);
+
+        TextureRegion wall35 = mainGame.assetManager.getWall();
+        this.wall35 = new Walls(this.world, wall35, new Vector2(5.05f,2.4f), 0.30f,0.1f);
+        this.stage.addActor(this.wall35);
+
+        TextureRegion wall36 = mainGame.assetManager.getWall();
+        this.wall36 = new Walls(this.world, wall36, new Vector2(4f,3.28f), 0.75f,0.08f);
+        this.stage.addActor(this.wall36);
+
+        TextureRegion wall37 = mainGame.assetManager.getWall();
+        this.wall37 = new Walls(this.world, wall37, new Vector2(4f,1.52f), 0.75f,0.08f);
+        this.stage.addActor(this.wall37);
 
     }
 

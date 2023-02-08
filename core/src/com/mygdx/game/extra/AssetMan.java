@@ -45,7 +45,7 @@ public class AssetMan {
     }
 
     //Textura de las tuberías
-    public TextureRegion getPipeDownTR(){
+    public TextureRegion getWall(){
         return this.textureAtlas.findRegion(WALL);
     }
 

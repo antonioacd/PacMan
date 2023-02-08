@@ -1,10 +1,15 @@
 package com.mygdx.game.actors;
 
+import static com.mygdx.game.extra.Utils.USER_EXTERIOR_WALLS;
+import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
+import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -14,8 +19,8 @@ import com.mygdx.game.extra.Utils;
 public class Walls extends Actor {
 
     //Para crear las paredes debemos fijar un ancho y alto
-    private static final float WALL_WIDTH = 4f;
-    private static final float WALL_HEIGHT = 4f;
+    private float wallWidth = 4f;
+    private float wallHeight = 4f;
 
     //Creamos Texturas, Body, fixture y mundo
     private TextureRegion pipeDownTR;
@@ -27,9 +32,11 @@ public class Walls extends Actor {
     private World world;
 
     //Todo 7 Constructor con mundo textura y posicion
-    public Walls(World world, TextureRegion trpDown, Vector2 position) {
+    public Walls(World world, TextureRegion trpDown, Vector2 position, float width, float height) {
         this.world = world;
         this.pipeDownTR = trpDown;
+        this.wallWidth = width;
+        this.wallHeight = height;
 
         createBodyPipeDown(position);
         createFixture();
@@ -54,7 +61,7 @@ public class Walls extends Actor {
     //Creamos método para la fixture
     private void createFixture() {
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(WALL_WIDTH /2, WALL_HEIGHT /2);
+        shape.setAsBox(wallWidth, wallHeight);
 
         this.fixtureDown = bodyDown.createFixture(shape, 8);
         shape.dispose();
@@ -69,9 +76,10 @@ public class Walls extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //Posicion de las fisicas
-        setPosition(this.bodyDown.getPosition().x - (WALL_WIDTH /2), this.bodyDown.getPosition().y - (WALL_HEIGHT /2) );
+        setPosition(this.bodyDown.getPosition().x, this.bodyDown.getPosition().y);
+        //setPosition(this.bodyDown.getPosition().x - (wallWidth /2), this.bodyDown.getPosition().y - (wallHeight /2) );
         //Posicion del "dibujo"
-        batch.draw(this.pipeDownTR, getX(),getY(), WALL_WIDTH, WALL_HEIGHT);
+        batch.draw(this.pipeDownTR, getX(),getY(), wallWidth, wallHeight);
     }
 
     //Todo 11. Creamos detach para liberar recursos
