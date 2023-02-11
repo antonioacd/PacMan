@@ -1,12 +1,8 @@
 package com.mygdx.game.actors;
 
-import static com.mygdx.game.extra.Utils.USER_PACMAN;
+import static com.mygdx.game.extra.Utils.USER_GHOST;
 import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
-import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -17,22 +13,21 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import java.awt.event.KeyEvent;
+public class Ghost extends Actor {
 
-
-public class PacMan extends Actor {
-
-    private static float PACMAN_WIDTH = 0.4f;
-    private static float PACMAN_HEIGHT = 0.4f;
+    private static float GHOST_WIDTH = 0.4f;
+    private static float GHOST_HEIGHT = 0.4f;
 
     //Declaramos los estados posibles del personaje, que sera, vivo o muerto
     private static final int STATE_NORMAL = 0;
     private static final int STATE_DEAD = 1;
+    private static final int STATE_ENABLETODEADTH = 2;
 
     private int state;
 
     //Declaramos los atributos del PacMan
-    private Animation<TextureRegion> pacManAnimation;
+    //private Animation<TextureRegion> pacManAnimation;
+    private TextureRegion texture;
     private Vector2 position;
     private int direccion;
 
@@ -45,30 +40,23 @@ public class PacMan extends Actor {
     private Body body;
     private Fixture fixture;
 
-    private int rotacion;
+    public Ghost(World world,TextureRegion texture, Vector2 position, int direccion){
 
-    public PacMan(World world,Animation<TextureRegion> animation, Vector2 position, int direccion){
-
-        //Asignamos la animacion y la posicion
-        this.pacManAnimation = animation;
+        //La posicion
+        //this.pacManAnimation = animation;
+        this.texture = texture;
         this.position = position;
         this.world = world;
         this.stateTime = 0f;
         this.state = STATE_NORMAL;
         this.direccion = direccion;
-        this.rotacion = 0;
 
         createBody();
         createFixture();
-
     }
 
     public void setDireccion(int direccion) {
         this.direccion = direccion;
-    }
-
-    public void setRotacion(int rotacion) {
-        this.rotacion = rotacion;
     }
 
     //Metodo para crear el cuerpo
@@ -88,12 +76,12 @@ public class PacMan extends Actor {
     private void createFixture(){
         //Como es un circulo, le damos un radio que sera el tamaño de la fisica
         CircleShape circle = new CircleShape();
-        circle.setRadius(PACMAN_HEIGHT/2);
+        circle.setRadius(GHOST_HEIGHT/2);
 
         //Creamos la fisica
         this.fixture = this.body.createFixture(circle, 8);
         //Le asignamos a esta fisica un "nombre" para identificarlo
-        this.fixture.setUserData(USER_PACMAN);
+        this.fixture.setUserData(USER_GHOST);
 
         circle.dispose();
     }
@@ -112,19 +100,15 @@ public class PacMan extends Actor {
         switch (direccion) {
             case -1:
                 this.body.setLinearVelocity(-1f, 0f);
-                this.setRotacion(180);
                 break;
             case 1:
                 this.body.setLinearVelocity(1f, 0f);
-                this.setRotacion(0);
                 break;
             case 0:
                 this.body.setLinearVelocity(0f, -1f);
-                this.setRotacion(-90);
                 break;
             case 2:
                 this.body.setLinearVelocity(0f, 1f);
-                this.setRotacion(90);
                 break;
         }
 
@@ -135,16 +119,10 @@ public class PacMan extends Actor {
 
         //Establecemos la posicion de la fisica restandole la mitad del tamaño del dibujo del PacMan
         setPosition(body.getPosition().x-0.2f, body.getPosition().y-0.2f);
-
         //Dibujamos el Pacman
+        batch.draw(texture, getX(), getY(), GHOST_WIDTH, GHOST_HEIGHT);
         //batch.draw(this.pacManAnimation.getKeyFrame(stateTime, true), getX(), getY(), PACMAN_WIDTH,PACMAN_WIDTH);
-
-        //Rotamos la animacion segun el angulo indicado en el parametro rotacion
-        batch.draw(pacManAnimation.getKeyFrame(stateTime, true), getX(),
-                getY(), PACMAN_WIDTH/2, PACMAN_HEIGHT/2,
-                PACMAN_WIDTH, PACMAN_HEIGHT, 1, 1, rotacion);
-
-        stateTime += Gdx.graphics.getDeltaTime();
+        //stateTime += Gdx.graphics.getDeltaTime();
     }
 
     public void detach(){

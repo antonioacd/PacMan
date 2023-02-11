@@ -16,10 +16,12 @@ public class Utils {
     public static final String PACMAN1 = "PacMan01";
     public static final String PACMAN2 = "PacMan02";
     public static final String PACMAN3 = "PacMan03";
-    public static final String WALL = "paredRoja";
+    public static final String GHOST = "Ghost01";
+    public static final String WALL = "fondo";
 
     //Identificador de cuerpos
     public static final String USER_PACMAN = "pacMan";
+    public static final String USER_GHOST = "ghost";
     public static final String USER_WALL = "walls";
     public static final String USER_EXTERIOR_WALLS = "e_walls";
 

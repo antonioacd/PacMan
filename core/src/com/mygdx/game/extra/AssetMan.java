@@ -2,6 +2,7 @@ package com.mygdx.game.extra;
 
 import static com.mygdx.game.extra.Utils.ATLAS_MAP;
 import static com.mygdx.game.extra.Utils.BACKGROUND_IMAGE;
+import static com.mygdx.game.extra.Utils.GHOST;
 import static com.mygdx.game.extra.Utils.PACMAN1;
 import static com.mygdx.game.extra.Utils.PACMAN2;
 import static com.mygdx.game.extra.Utils.PACMAN3;
@@ -37,11 +38,16 @@ public class AssetMan {
 
     //ANIMACIÓN PÁJARO
     public Animation<TextureRegion> getBirdAnimation(){
-        return new Animation<TextureRegion>(0.33f,
+        return new Animation<TextureRegion>(0.11f,
+                textureAtlas.findRegion(PACMAN3),
+                textureAtlas.findRegion(PACMAN2),
+                textureAtlas.findRegion(PACMAN1),
+                textureAtlas.findRegion(PACMAN3),
+                textureAtlas.findRegion(PACMAN2),
+                textureAtlas.findRegion(PACMAN1),
                 textureAtlas.findRegion(PACMAN3),
                 textureAtlas.findRegion(PACMAN2),
                 textureAtlas.findRegion(PACMAN1));
-
     }
 
     //Textura de las tuberías
@@ -49,6 +55,11 @@ public class AssetMan {
         return this.textureAtlas.findRegion(WALL);
     }
 
+    //Textura del fantasma
+
+    public TextureRegion getGhost(){
+        return this.textureAtlas.findRegion(GHOST);
+    }
 
 }
 

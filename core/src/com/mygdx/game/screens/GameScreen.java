@@ -19,16 +19,19 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.MainGame;
+import com.mygdx.game.actors.Ghost;
 import com.mygdx.game.actors.PacMan;
 import com.mygdx.game.actors.Walls;
 
-public class GameScreen  extends BaseScreen {
+public class GameScreen extends BaseScreen {
 
     private Stage stage;
     private PacMan pacMan;
+    private Ghost ghost;
     private Image background;
 
     //Declaramos un mundo
@@ -38,7 +41,7 @@ public class GameScreen  extends BaseScreen {
     private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera ortCamera;
 
-    Walls wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18, wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36, wall37, wall38, wall39, wall40, wall41, wall42;
+    Walls wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18, wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36, wall37, wall38, wall39, wall40, wall41, wall42, wall43;
 
 
     public GameScreen(MainGame mainGame) {
@@ -55,6 +58,18 @@ public class GameScreen  extends BaseScreen {
         //Colocamos la camara, la cual sera estatica
         this.ortCamera = (OrthographicCamera) this.stage.getCamera();
         this.debugRenderer = new Box2DDebugRenderer();
+    }
+
+    private void endScreenTeleport() {
+        if (pacMan.getY() < -0.1) {
+            // Ajusta la posición para que aparezca por el lado derecho
+            pacMan.arriba(pacMan.getX());
+        }
+        // Verifica si el actor ha salido de la pantalla por el lado derecho
+        if (pacMan.getY() > WORLD_HEIGHT+0.1) {
+            // Ajusta la posición para que aparezca por el lado izquierdo
+            pacMan.abajo(pacMan.getX());
+        }
     }
 
     //Añadimos el fondo
@@ -79,52 +94,16 @@ public class GameScreen  extends BaseScreen {
         this.stage.addActor(this.pacMan);
     }
 
-    private void addFloor() {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bodyDef);
-        body.setUserData(USER_EXTERIOR_WALLS);
+    public void addGhost(){
 
-        EdgeShape edge = new EdgeShape();
-        edge.set(0,0f,WORLD_WIDTH,0f);
-        body.createFixture(edge, 8);
-        edge.dispose();
-    }
+        TextureRegion tRGhost = mainGame.assetManager.getGhost();
+        //Asignamos la animacion a la que obtenemos del assetManager
+        //Animation<TextureRegion> pacManSprite = mainGame.assetManager.getBirdAnimation();
+        //Creamos el pacman asignandole el mundo y la posición
+        this.ghost = new Ghost(this.world, tRGhost, new Vector2(4f, 2f), 4);
+        //Añadimos el PacMan
+        this.stage.addActor(this.ghost);
 
-    public void addRoof(){
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bodyDef);
-        body.setUserData(USER_EXTERIOR_WALLS);
-
-        EdgeShape edge = new EdgeShape();
-        edge.set(0,WORLD_HEIGHT,WORLD_WIDTH,WORLD_HEIGHT);
-        body.createFixture(edge, 8);
-        edge.dispose();
-    }
-
-    public void addLeftWall(){
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bodyDef);
-        body.setUserData(USER_EXTERIOR_WALLS);
-
-        EdgeShape edge = new EdgeShape();
-        edge.set(0f,WORLD_HEIGHT,0f,0);
-        body.createFixture(edge, 8);
-        edge.dispose();
-    }
-
-    public void addRightWall(){
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bodyDef);
-        body.setUserData(USER_EXTERIOR_WALLS);
-
-        EdgeShape edge = new EdgeShape();
-        edge.set(WORLD_WIDTH,WORLD_HEIGHT,WORLD_WIDTH,0);
-        body.createFixture(edge, 8);
-        edge.dispose();
     }
 
     public void getDireccion(){
@@ -162,6 +141,7 @@ public class GameScreen  extends BaseScreen {
         Gdx.input.setInputProcessor(this.stage);
         //Hace que no pase de menos de 30 FPS
         this.stage.act();
+        endScreenTeleport();
         //Se encarga de la deteccion de colisiones
         this.world.step(delta,6,2);
         //Ejecuta el metodo draw
@@ -175,11 +155,27 @@ public class GameScreen  extends BaseScreen {
         //Se muestran el fondo y el PacMan
         addBackground();
         addPacMan();
+        addGhost();
         getDireccion();
-        addFloor();
-        addRoof();
-        addLeftWall();
-        addRightWall();
+        addWalls();
+
+    }
+
+    @Override
+    public void hide() {
+        this.pacMan.detach();
+        this.pacMan.remove();
+    }
+
+
+    @Override
+    public void dispose() {
+        //Elimina el escenario y el mundo
+        this.stage.dispose();
+        this.world.dispose();
+    }
+
+    public void addWalls(){
 
         TextureRegion wall01 = mainGame.assetManager.getWall();
         this.wall01 = new Walls(this.world, wall01, new Vector2(0.55f,2.4f), 0.1f,1.95f);
@@ -329,22 +325,30 @@ public class GameScreen  extends BaseScreen {
         this.wall37 = new Walls(this.world, wall37, new Vector2(4f,1.52f), 0.75f,0.08f);
         this.stage.addActor(this.wall37);
 
+        TextureRegion wall38 = mainGame.assetManager.getWall();
+        this.wall38 = new Walls(this.world, wall38, new Vector2(6.55f,0), 2f,0.01f);
+        this.stage.addActor(this.wall38);
+
+        TextureRegion wall39 = mainGame.assetManager.getWall();
+        this.wall39 = new Walls(this.world, wall39, new Vector2(1.45f,0), 2f,0.01f);
+        this.stage.addActor(this.wall39);
+
+        TextureRegion wall40 = mainGame.assetManager.getWall();
+        this.wall40 = new Walls(this.world, wall40, new Vector2(1.45f,4.8f), 2f,0.01f);
+        this.stage.addActor(this.wall40);
+
+        TextureRegion wall41 = mainGame.assetManager.getWall();
+        this.wall41 = new Walls(this.world, wall41, new Vector2(6.55f,4.8f), 2f,0.01f);
+        this.stage.addActor(this.wall41);
+
+        TextureRegion wall42 = mainGame.assetManager.getWall();
+        this.wall42 = new Walls(this.world, wall42, new Vector2(0f,2.4f), 0.01f,2.5f);
+        this.stage.addActor(this.wall42);
+
+        TextureRegion wall43 = mainGame.assetManager.getWall();
+        this.wall43 = new Walls(this.world, wall43, new Vector2(8f,2.4f), 0.01f,2.5f);
+        this.stage.addActor(this.wall43);
+
     }
-
-    @Override
-    public void hide() {
-        this.pacMan.detach();
-        this.pacMan.remove();
-    }
-
-
-    @Override
-    public void dispose() {
-        //Elimina el escenario y el mundo
-        this.stage.dispose();
-        this.world.dispose();
-    }
-
-
 
 }
