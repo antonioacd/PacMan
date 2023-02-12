@@ -23,6 +23,6 @@ public class Utils {
     public static final String USER_PACMAN = "pacMan";
     public static final String USER_GHOST = "ghost";
     public static final String USER_WALL = "walls";
-    public static final String USER_EXTERIOR_WALLS = "e_walls";
+    public static final String USER_EXTERIOR_WALLS = "ewalls";
 
 }

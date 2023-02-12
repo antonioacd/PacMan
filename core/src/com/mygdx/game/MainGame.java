@@ -6,10 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.extra.AssetMan;
+import com.mygdx.game.screens.GameOverScreen;
 import com.mygdx.game.screens.GameScreen;
+import com.mygdx.game.screens.GetReadyScreen;
 
 public class MainGame extends Game {
-	private GameScreen gameScreen;
+
+	public GameScreen gameScreen;
+	public GameOverScreen gameOverScreen;
+	public GetReadyScreen getReadyScreen;
 
 	public AssetMan assetManager;
 
@@ -18,7 +23,8 @@ public class MainGame extends Game {
 		this.assetManager = new AssetMan();
 
 		this.gameScreen = new GameScreen(this);
-
+		this.gameOverScreen = new GameOverScreen(this);
+		this.getReadyScreen = new GetReadyScreen(this);
 		setScreen(this.gameScreen);
 	}
 }

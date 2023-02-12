@@ -1,6 +1,7 @@
 package com.mygdx.game.actors;
 
 import static com.mygdx.game.extra.Utils.USER_EXTERIOR_WALLS;
+import static com.mygdx.game.extra.Utils.USER_WALL;
 import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
 import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
 
@@ -54,8 +55,7 @@ public class Walls extends Actor {
         //Creamos el cuerpo
         bodyDown = world.createBody(def);
         //Le damos el identificador
-        bodyDown.setUserData(Utils.USER_WALL);
-
+        bodyDown.setUserData(USER_WALL);
     }
 
     //Creamos método para la fixture

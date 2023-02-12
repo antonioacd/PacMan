@@ -111,7 +111,6 @@ public class Ghost extends Actor {
                 this.body.setLinearVelocity(0f, 1f);
                 break;
         }
-
     }
 
     @Override
@@ -123,6 +122,11 @@ public class Ghost extends Actor {
         batch.draw(texture, getX(), getY(), GHOST_WIDTH, GHOST_HEIGHT);
         //batch.draw(this.pacManAnimation.getKeyFrame(stateTime, true), getX(), getY(), PACMAN_WIDTH,PACMAN_WIDTH);
         //stateTime += Gdx.graphics.getDeltaTime();
+    }
+
+    public void dead() {
+        state = STATE_DEAD;
+        stateTime = 0f;
     }
 
     public void detach(){

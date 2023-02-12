@@ -1,6 +1,11 @@
 package com.mygdx.game.screens;
 
+import static com.mygdx.game.extra.Utils.PACMAN1;
+import static com.mygdx.game.extra.Utils.SCREEN_WIDTH;
 import static com.mygdx.game.extra.Utils.USER_EXTERIOR_WALLS;
+import static com.mygdx.game.extra.Utils.USER_GHOST;
+import static com.mygdx.game.extra.Utils.USER_PACMAN;
+import static com.mygdx.game.extra.Utils.USER_WALL;
 import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
 import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
 
@@ -9,12 +14,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -27,7 +37,12 @@ import com.mygdx.game.actors.Ghost;
 import com.mygdx.game.actors.PacMan;
 import com.mygdx.game.actors.Walls;
 
-public class GameScreen extends BaseScreen {
+import jdk.internal.org.jline.utils.Log;
+
+public class GameScreen extends BaseScreen implements ContactListener {
+
+    //Todo 3. Creamos una valiabre contador....
+    private int scoreNumber;
 
     private Stage stage;
     private PacMan pacMan;
@@ -39,24 +54,31 @@ public class GameScreen extends BaseScreen {
 
     //Depuración
     private Box2DDebugRenderer debugRenderer;
-    private OrthographicCamera ortCamera;
+    private OrthographicCamera worldCamera;
+    //Score Cámara
+    private OrthographicCamera fontCamera;
+    private BitmapFont score;
 
     Walls wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18, wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36, wall37, wall38, wall39, wall40, wall41, wall42, wall43;
+
 
 
     public GameScreen(MainGame mainGame) {
         super(mainGame);
 
+        System.out.println("Comienzo");
+
         //Inicializamos el mundo dandole la gravedad, como en mi caso, no habra gravedad
         // le pondre 0,0
         this.world = new World(new Vector2(0,0), true);
 
+        this.world.setContactListener(this);
         //Asignamos la vista al stage
         FitViewport fitViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
         this.stage = new Stage(fitViewport);
 
         //Colocamos la camara, la cual sera estatica
-        this.ortCamera = (OrthographicCamera) this.stage.getCamera();
+        this.worldCamera = (OrthographicCamera) this.stage.getCamera();
         this.debugRenderer = new Box2DDebugRenderer();
     }
 
@@ -139,15 +161,17 @@ public class GameScreen extends BaseScreen {
         //Elimina la imagen anterior anterior
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(this.stage);
+
+        this.stage.getBatch().setProjectionMatrix(worldCamera.combined);
         //Hace que no pase de menos de 30 FPS
         this.stage.act();
-        endScreenTeleport();
         //Se encarga de la deteccion de colisiones
         this.world.step(delta,6,2);
+        endScreenTeleport();
         //Ejecuta el metodo draw
         this.stage.draw();
         //
-        this.debugRenderer.render(this.world, this.ortCamera.combined);
+        this.debugRenderer.render(this.world, this.worldCamera.combined);
     }
 
     @Override
@@ -165,14 +189,6 @@ public class GameScreen extends BaseScreen {
     public void hide() {
         this.pacMan.detach();
         this.pacMan.remove();
-    }
-
-
-    @Override
-    public void dispose() {
-        //Elimina el escenario y el mundo
-        this.stage.dispose();
-        this.world.dispose();
     }
 
     public void addWalls(){
@@ -350,5 +366,76 @@ public class GameScreen extends BaseScreen {
         this.stage.addActor(this.wall43);
 
     }
+
+    @Override
+    public void dispose() {
+        this.stage.dispose();
+        this.world.dispose();
+    }
+
+    private boolean areColider(Contact contact, Object objA, Object objB) {
+
+        Object userDataA = contact.getFixtureA().getUserData();
+        Object userDataB = contact.getFixtureB().getUserData();
+
+        if (userDataA == null || userDataB == null) {
+            return false;
+        }
+
+        return (contact.getFixtureA().getUserData().equals(objA) && contact.getFixtureB().getUserData().equals(objB)) ||
+                (contact.getFixtureA().getUserData().equals(objB) && contact.getFixtureB().getUserData().equals(objA));
+    }
+
+    //Método que se llamará cada vez que se produzca cualquier contacto
+    @Override
+    public void beginContact(Contact contact) {
+
+        //Todo 7. Si 'han colisionado' el pájaro con el contador sumamos 1 al contador...
+        if (areColider(contact, USER_PACMAN, USER_GHOST)) {
+            System.out.println("Choque");
+            pacMan.dead();
+            //this.hide();
+            //Todo 8.4 Se lanza la secuencia de acciones,cuya última será el pasar a la ventana de GameOverScreen
+            this.stage.addAction(Actions.sequence(
+                    Actions.delay(0f),
+                    Actions.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainGame.setScreen(mainGame.gameOverScreen);
+                        }
+                    })
+
+            ));
+        } else {
+            //Todo 8 En cualquier otro caso significaría que el pájaro ha colisionado con algún otro elemento y se acaba la partida
+            //Todo 8.1 Lanzamos el método hurt del pájaro para que se cambie el estado a DEAD
+            //this.hitSound.play();
+            //Todo 8.2 Paramos la música y lanzamos sonido de gameOver
+            //this.musicbg.stop();
+            //this.gameOverSound.play();
+            //Todo 8.3 Recorremos el array de Pipes para parar los que se encuentren creados en este momento
+
+            //this.hide();
+
+
+
+        }
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
+
 
 }

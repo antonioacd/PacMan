@@ -60,7 +60,6 @@ public class PacMan extends Actor {
 
         createBody();
         createFixture();
-
     }
 
     public void setDireccion(int direccion) {
@@ -98,6 +97,11 @@ public class PacMan extends Actor {
         circle.dispose();
     }
 
+    public void dead() {
+        state = STATE_DEAD;
+        stateTime = 0f;
+    }
+
     public void arriba(float xPacMan){
         this.body.setTransform(new Vector2(xPacMan + 0.20f,WORLD_HEIGHT), 0);
     }
@@ -127,7 +131,6 @@ public class PacMan extends Actor {
                 this.setRotacion(90);
                 break;
         }
-
     }
 
     @Override
