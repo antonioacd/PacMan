@@ -10,13 +10,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import java.security.Policy;
+
 public class Ghost extends Actor {
 
-    private static float GHOST_WIDTH = 0.4f;
-    private static float GHOST_HEIGHT = 0.4f;
+    private static float GHOST_WIDTH = 0.3f;
+    private static float GHOST_HEIGHT = 0.3f;
 
     //Declaramos los estados posibles del personaje, que sera, vivo o muerto
     private static final int STATE_NORMAL = 0;
@@ -29,7 +32,7 @@ public class Ghost extends Actor {
     //private Animation<TextureRegion> pacManAnimation;
     private TextureRegion texture;
     private Vector2 position;
-    private int direccion;
+    private int direction;
 
     private float stateTime;
 
@@ -40,23 +43,39 @@ public class Ghost extends Actor {
     private Body body;
     private Fixture fixture;
 
+    private Vector2 posAntigua;
+
     public Ghost(World world,TextureRegion texture, Vector2 position, int direccion){
 
-        //La posicion
-        //this.pacManAnimation = animation;
         this.texture = texture;
         this.position = position;
         this.world = world;
         this.stateTime = 0f;
         this.state = STATE_NORMAL;
-        this.direccion = direccion;
+        this.direction = direccion;
 
         createBody();
         createFixture();
     }
 
-    public void setDireccion(int direccion) {
-        this.direccion = direccion;
+    public Vector2 getPosition() {
+        return fixture.getBody().getPosition();
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public Vector2 getPosAntigua() {
+        return posAntigua;
+    }
+
+    public void setPosAntigua(Vector2 posAntigua) {
+        this.posAntigua = posAntigua;
     }
 
     //Metodo para crear el cuerpo
@@ -78,6 +97,9 @@ public class Ghost extends Actor {
         CircleShape circle = new CircleShape();
         circle.setRadius(GHOST_HEIGHT/2);
 
+        //PolygonShape poligon = new PolygonShape();
+        //poligon.setAsBox(GHOST_WIDTH, GHOST_HEIGHT);
+
         //Creamos la fisica
         this.fixture = this.body.createFixture(circle, 8);
         //Le asignamos a esta fisica un "nombre" para identificarlo
@@ -97,19 +119,21 @@ public class Ghost extends Actor {
     @Override
     public void act(float delta) {
 
-        switch (direccion) {
+        switch (direction) {
             case -1:
-                this.body.setLinearVelocity(-1f, 0f);
-                break;
-            case 1:
-                this.body.setLinearVelocity(1f, 0f);
+                this.body.setLinearVelocity(0f, -2f);
                 break;
             case 0:
-                this.body.setLinearVelocity(0f, -1f);
+                this.body.setLinearVelocity(0f, 2f);
+                break;
+            case 1:
+                this.body.setLinearVelocity(2f, 0f);
                 break;
             case 2:
-                this.body.setLinearVelocity(0f, 1f);
+                this.body.setLinearVelocity(-2f, 0f);
                 break;
+
+                //-1: abajo , 0: arriba , 1: derecha, 2:izquierda
         }
     }
 
@@ -134,4 +158,20 @@ public class Ghost extends Actor {
         this.world.destroyBody(this.body);
     }
 
+    public void reverseDirection() {
+        direction = (direction + 2) % 4;
+    }
+
+    public boolean isBlocked(float delta) {
+
+        return false;
+    }
+
+    public void changeDirection() {
+        int newDirection = (int) (Math.random() * 4);
+        while (newDirection == direction || (newDirection + 2) % 4 == direction) {
+            newDirection = (int) (Math.random() * 4);
+        }
+        direction = newDirection;
+    }
 }

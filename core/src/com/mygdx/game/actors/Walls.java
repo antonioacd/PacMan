@@ -1,21 +1,18 @@
 package com.mygdx.game.actors;
 
-import static com.mygdx.game.extra.Utils.USER_EXTERIOR_WALLS;
+import static com.mygdx.game.extra.Utils.USER_GHOST;
+import static com.mygdx.game.extra.Utils.USER_PACMAN;
 import static com.mygdx.game.extra.Utils.USER_WALL;
-import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
-import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.extra.Utils;
 
 public class Walls extends Actor {
 
@@ -39,13 +36,13 @@ public class Walls extends Actor {
         this.wallWidth = width;
         this.wallHeight = height;
 
-        createBodyPipeDown(position);
+        createBodyWall(position);
         createFixture();
     }
 
 
     //creamos metodo para body pasandole la posicion
-    private void createBodyPipeDown(Vector2 position) {
+    private void createBodyWall(Vector2 position) {
         //Creamos el cuerpo de la pared
         BodyDef def = new BodyDef();
         //Establecemos la posicion
@@ -65,6 +62,7 @@ public class Walls extends Actor {
 
         this.fixtureDown = bodyDown.createFixture(shape, 8);
         shape.dispose();
+        this.fixtureDown.setUserData(USER_WALL);
     }
 
     //Todo 10. Sobrecargamos métodos act y draw

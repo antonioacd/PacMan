@@ -1,8 +1,5 @@
 package com.mygdx.game.screens;
 
-import static com.mygdx.game.extra.Utils.PACMAN1;
-import static com.mygdx.game.extra.Utils.SCREEN_WIDTH;
-import static com.mygdx.game.extra.Utils.USER_EXTERIOR_WALLS;
 import static com.mygdx.game.extra.Utils.USER_GHOST;
 import static com.mygdx.game.extra.Utils.USER_PACMAN;
 import static com.mygdx.game.extra.Utils.USER_WALL;
@@ -16,14 +13,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,8 +31,6 @@ import com.mygdx.game.MainGame;
 import com.mygdx.game.actors.Ghost;
 import com.mygdx.game.actors.PacMan;
 import com.mygdx.game.actors.Walls;
-
-import jdk.internal.org.jline.utils.Log;
 
 public class GameScreen extends BaseScreen implements ContactListener {
 
@@ -59,14 +52,17 @@ public class GameScreen extends BaseScreen implements ContactListener {
     private OrthographicCamera fontCamera;
     private BitmapFont score;
 
+    Vector2 posicionAntGhost;
+
+    int dirGhostUltima = 1;
+    int dirGhostAnterior = 1;
+
+    float tiempo = 0;
+
     Walls wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18, wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36, wall37, wall38, wall39, wall40, wall41, wall42, wall43;
-
-
 
     public GameScreen(MainGame mainGame) {
         super(mainGame);
-
-        System.out.println("Comienzo");
 
         //Inicializamos el mundo dandole la gravedad, como en mi caso, no habra gravedad
         // le pondre 0,0
@@ -83,12 +79,12 @@ public class GameScreen extends BaseScreen implements ContactListener {
     }
 
     private void endScreenTeleport() {
-        if (pacMan.getY() < -0.1) {
+        if (pacMan.getY() < -0.2) {
             // Ajusta la posición para que aparezca por el lado derecho
             pacMan.arriba(pacMan.getX());
         }
         // Verifica si el actor ha salido de la pantalla por el lado derecho
-        if (pacMan.getY() > WORLD_HEIGHT+0.1) {
+        if (pacMan.getY() > WORLD_HEIGHT-0.1) {
             // Ajusta la posición para que aparezca por el lado izquierdo
             pacMan.abajo(pacMan.getX());
         }
@@ -122,13 +118,13 @@ public class GameScreen extends BaseScreen implements ContactListener {
         //Asignamos la animacion a la que obtenemos del assetManager
         //Animation<TextureRegion> pacManSprite = mainGame.assetManager.getBirdAnimation();
         //Creamos el pacman asignandole el mundo y la posición
-        this.ghost = new Ghost(this.world, tRGhost, new Vector2(4f, 2f), 4);
+        this.ghost = new Ghost(this.world, tRGhost, new Vector2(4f, 2f), 1);
         //Añadimos el PacMan
         this.stage.addActor(this.ghost);
 
     }
 
-    public void getDireccion(){
+    public void getPacManDireccion(){
 
         this.stage.addListener(new InputListener(){
 
@@ -156,6 +152,12 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
     }
 
+    /*public void getGhostDirection(){
+
+        ghost.setDirection(1);
+
+    }*/
+
     @Override
     public void render(float delta) {
         //Elimina la imagen anterior anterior
@@ -163,15 +165,39 @@ public class GameScreen extends BaseScreen implements ContactListener {
         Gdx.input.setInputProcessor(this.stage);
 
         this.stage.getBatch().setProjectionMatrix(worldCamera.combined);
+        System.out.println("0: " + ghost.getPosition().toString());
         //Hace que no pase de menos de 30 FPS
         this.stage.act();
+        System.out.println("Antes del metodo: " + ghost.getPosition().toString());
         //Se encarga de la deteccion de colisiones
-        this.world.step(delta,6,2);
+        bloqueado(delta);
         endScreenTeleport();
-        //Ejecuta el metodo draw
+        System.out.println("3: " + ghost.getPosition().toString());
+
         this.stage.draw();
-        //
+        System.out.println("4: " + ghost.getPosition().toString());
+
         this.debugRenderer.render(this.world, this.worldCamera.combined);
+    }
+
+    public boolean bloqueado(float delta){
+
+        boolean block = false;
+
+        if (ghost.getPosition() == ghost.getPosAntigua()) {
+            block = true;
+            System.out.println(ghost.getPosition().toString() + " - " + ghost.getPosAntigua().toString());
+        }else{
+            block = false;
+        }
+
+        ghost.setPosAntigua(ghost.getPosition());
+        System.out.println("Antes de ejecutar el step: " + ghost.getPosAntigua().toString());
+        this.world.step(delta, 6, 2);
+        System.out.println("Despues de ejecutar el step: " + ghost.getPosition().toString());
+        System.out.println("Pos antigua: " + ghost.getPosAntigua().toString());
+
+        return block;
     }
 
     @Override
@@ -180,9 +206,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
         addBackground();
         addPacMan();
         addGhost();
-        getDireccion();
+        getPacManDireccion();
         addWalls();
-
     }
 
     @Override
@@ -305,9 +330,9 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.wall28 = new Walls(this.world, wall28, new Vector2(5.70f,1.65f), 0.5f,0.2f);
         this.stage.addActor(this.wall28);
 
-        TextureRegion wall29 = mainGame.assetManager.getWall();
+        /*TextureRegion wall29 = mainGame.assetManager.getWall();
         this.wall29 = new Walls(this.world, wall29, new Vector2(4f,2.1f), 0.65f,0.05f);
-        this.stage.addActor(this.wall29);
+        this.stage.addActor(this.wall29);*/
 
         TextureRegion wall30 = mainGame.assetManager.getWall();
         this.wall30 = new Walls(this.world, wall30, new Vector2(3.30f,2.35f), 0.05f,0.3f);
@@ -417,9 +442,31 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
             //this.hide();
 
+        }
 
+        //-1: abajo , 0: arriba , 1: derecha, 2: izquierda
+
+        if (areColider(contact, USER_GHOST, USER_WALL)){
+
+            int num = 0;
+
+            do {
+
+                num = MathUtils.random(-1,2);
+
+                System.out.println("DirAnterior: " + dirGhostAnterior + " - " + "DirNueva: " + dirGhostUltima);
+
+            }while(dirGhostAnterior == num || dirGhostUltima == num);
+
+            dirGhostAnterior = dirGhostUltima;
+
+            dirGhostUltima = num;
+
+            System.out.println("Dir: " + num);
+            this.ghost.setDirection(num);
 
         }
+
     }
 
     @Override
