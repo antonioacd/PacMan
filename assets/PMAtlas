@@ -1,61 +1,61 @@
 
-PacMan01.png
-size: 820, 484
+PMAtlas.png
+size: 1174, 484
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 Ghost01
   rotate: false
-  xy: 804, 452
+  xy: 1076, 354
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost02
   rotate: false
-  xy: 804, 420
+  xy: 1076, 338
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost03
   rotate: false
-  xy: 804, 436
+  xy: 1092, 370
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost04
   rotate: false
-  xy: 804, 468
+  xy: 1076, 370
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 PacMan01
   rotate: false
-  xy: 804, 375
+  xy: 1076, 323
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 PacMan02
   rotate: false
-  xy: 804, 390
+  xy: 1108, 371
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 PacMan03
   rotate: false
-  xy: 804, 405
+  xy: 1092, 355
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 cereza
   rotate: false
-  xy: 804, 361
+  xy: 1092, 341
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -65,5 +65,19 @@ fondo
   xy: 2, 2
   size: 800, 480
   orig: 800, 480
+  offset: 0, 0
+  index: -1
+paredes
+  rotate: false
+  xy: 804, 2
+  size: 270, 480
+  orig: 270, 480
+  offset: 0, 0
+  index: -1
+paredes02
+  rotate: false
+  xy: 1076, 386
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: -1

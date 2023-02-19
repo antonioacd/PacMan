@@ -1,7 +1,5 @@
 package com.mygdx.game.actors;
 
-import static com.mygdx.game.extra.Utils.USER_GHOST;
-import static com.mygdx.game.extra.Utils.USER_PACMAN;
 import static com.mygdx.game.extra.Utils.USER_WALL;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,7 +19,7 @@ public class Walls extends Actor {
     private float wallHeight = 4f;
 
     //Creamos Texturas, Body, fixture y mundo
-    private TextureRegion pipeDownTR;
+    private TextureRegion texture;
 
     private Body bodyDown;
 
@@ -30,9 +28,9 @@ public class Walls extends Actor {
     private World world;
 
     //Todo 7 Constructor con mundo textura y posicion
-    public Walls(World world, TextureRegion trpDown, Vector2 position, float width, float height) {
+    public Walls(World world, TextureRegion texture, Vector2 position, float width, float height) {
         this.world = world;
-        this.pipeDownTR = trpDown;
+        this.texture = texture;
         this.wallWidth = width;
         this.wallHeight = height;
 
@@ -74,10 +72,10 @@ public class Walls extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //Posicion de las fisicas
-        setPosition(this.bodyDown.getPosition().x, this.bodyDown.getPosition().y);
-        //setPosition(this.bodyDown.getPosition().x - (wallWidth /2), this.bodyDown.getPosition().y - (wallHeight /2) );
+        //setPosition(this.bodyDown.getPosition().x - 0.2f, this.bodyDown.getPosition().y - 0.2f);
+        setPosition(this.bodyDown.getPosition().x - wallWidth, this.bodyDown.getPosition().y - wallHeight);
         //Posicion del "dibujo"
-        batch.draw(this.pipeDownTR, getX(),getY(), wallWidth, wallHeight);
+        batch.draw(texture, getX(),getY(), wallWidth*2f, wallHeight*2f);
     }
 
     //Todo 11. Creamos detach para liberar recursos

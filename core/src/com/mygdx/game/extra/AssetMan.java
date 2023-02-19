@@ -2,13 +2,23 @@ package com.mygdx.game.extra;
 
 import static com.mygdx.game.extra.Utils.ATLAS_MAP;
 import static com.mygdx.game.extra.Utils.BACKGROUND_IMAGE;
-import static com.mygdx.game.extra.Utils.GHOST;
+import static com.mygdx.game.extra.Utils.CHERRY;
+import static com.mygdx.game.extra.Utils.DEADSOUND;
+import static com.mygdx.game.extra.Utils.EATCHERRY;
+import static com.mygdx.game.extra.Utils.EATGHOST;
+import static com.mygdx.game.extra.Utils.GHOST01;
+import static com.mygdx.game.extra.Utils.GHOST02;
+import static com.mygdx.game.extra.Utils.GHOST03;
+import static com.mygdx.game.extra.Utils.GHOST04;
+import static com.mygdx.game.extra.Utils.MUSICBG;
 import static com.mygdx.game.extra.Utils.PACMAN1;
 import static com.mygdx.game.extra.Utils.PACMAN2;
 import static com.mygdx.game.extra.Utils.PACMAN3;
 import static com.mygdx.game.extra.Utils.WALL;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,6 +34,12 @@ public class AssetMan {
         //Inicializamos el assetManager
         this.assetManager = new AssetManager();
 
+        //Musica
+        assetManager.load(MUSICBG, Music.class);
+        assetManager.load(EATCHERRY, Sound.class);
+        assetManager.load(EATGHOST, Sound.class);
+        assetManager.load(DEADSOUND, Sound.class);
+
         //Cargamos el Atlas
         assetManager.load(ATLAS_MAP, TextureAtlas.class);
         assetManager.finishLoading();
@@ -31,6 +47,7 @@ public class AssetMan {
         //Obtenemos el atlas
         this.textureAtlas = assetManager.get(ATLAS_MAP);
     }
+
     //IMAGEN DE FONDO
     public TextureRegion getBackground(){
         return this.textureAtlas.findRegion(BACKGROUND_IMAGE);
@@ -41,25 +58,35 @@ public class AssetMan {
         return new Animation<TextureRegion>(0.11f,
                 textureAtlas.findRegion(PACMAN3),
                 textureAtlas.findRegion(PACMAN2),
-                textureAtlas.findRegion(PACMAN1),
-                textureAtlas.findRegion(PACMAN3),
-                textureAtlas.findRegion(PACMAN2),
-                textureAtlas.findRegion(PACMAN1),
-                textureAtlas.findRegion(PACMAN3),
-                textureAtlas.findRegion(PACMAN2),
                 textureAtlas.findRegion(PACMAN1));
     }
 
-    //Textura de las tuberías
+    //Textura de las paredes
+
     public TextureRegion getWall(){
         return this.textureAtlas.findRegion(WALL);
     }
 
-    //Textura del fantasma
+    //Texturas de los fantasmas
 
-    public TextureRegion getGhost(){
-        return this.textureAtlas.findRegion(GHOST);
+    public TextureRegion getRedGhost(){
+        return this.textureAtlas.findRegion(GHOST01);
     }
+    public TextureRegion getBlueRedGhost(){return this.textureAtlas.findRegion(GHOST02);}
+    public TextureRegion getPinkGhost(){return this.textureAtlas.findRegion(GHOST03);}
+    public TextureRegion getOrangeGhost(){return this.textureAtlas.findRegion(GHOST04);}
+
+    //Textura de la cereza
+
+    public TextureRegion getCherry(){return this.textureAtlas.findRegion(CHERRY);}
+
+    //Sonidos
+
+    public Music getMusicBackground(){return this.assetManager.get(MUSICBG);}
+    public Sound getEatCherrySound(){return this.assetManager.get(EATCHERRY);}
+    public Music getEatGhostSound(){return this.assetManager.get(EATGHOST);}
+    public Sound getDeadSound(){return this.assetManager.get(DEADSOUND);}
+
 
 }
 

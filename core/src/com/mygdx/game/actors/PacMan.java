@@ -113,6 +113,31 @@ public class PacMan extends Actor {
     @Override
     public void act(float delta) {
 
+        if (Gdx.input.isTouched()) {
+            // Move object based on touch movement
+            float deltaX = Gdx.input.getDeltaX();
+            float deltaY = Gdx.input.getDeltaY();
+
+            System.out.println(deltaX + " - " + deltaY);
+
+
+            if (deltaX > 0){
+                direccion = 1;
+            }
+
+            if (deltaX < 0){
+                direccion = -1;
+            }
+
+            if (deltaY > 0){
+                direccion = 0;
+            }
+
+            if (deltaY < 0){
+                direccion = 2;
+            }
+        }
+
         switch (direccion) {
             case -1:
                 this.body.setLinearVelocity(-1f, 0f);
