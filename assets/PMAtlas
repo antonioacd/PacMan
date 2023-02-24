@@ -1,118 +1,125 @@
 
 PMAtlas.png
-size: 1889, 832
+size: 1790, 1008
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 Ghost01
   rotate: false
-  xy: 1857, 334
+  xy: 77, 992
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost02
   rotate: false
-  xy: 1841, 318
+  xy: 109, 992
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost03
   rotate: false
-  xy: 1873, 334
+  xy: 93, 992
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost04
   rotate: false
-  xy: 1841, 334
+  xy: 61, 992
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 PacMan01
   rotate: false
-  xy: 1857, 304
+  xy: 46, 993
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 PacMan02
   rotate: false
-  xy: 1872, 319
+  xy: 31, 993
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 PacMan03
   rotate: false
-  xy: 1857, 319
+  xy: 16, 993
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 cereza
   rotate: false
-  xy: 1841, 304
+  xy: 2, 994
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 exit
   rotate: false
-  xy: 1478, 3
+  xy: 125, 835
   size: 384, 171
   orig: 384, 171
   offset: 0, 0
   index: -1
 fondo
   rotate: false
-  xy: 2, 350
+  xy: 2, 4
   size: 800, 480
   orig: 800, 480
   offset: 0, 0
   index: -1
 fondoJuego
   rotate: false
-  xy: 804, 350
+  xy: 804, 2
   size: 800, 480
   orig: 800, 480
   offset: 0, 0
   index: -1
 gameover
   rotate: false
-  xy: 2, 2
+  xy: 2, 486
   size: 804, 172
   orig: 804, 172
   offset: 0, 0
   index: -1
 nicetry
   rotate: false
-  xy: 808, 2
+  xy: 2, 660
   size: 668, 172
   orig: 668, 172
   offset: 0, 0
   index: -1
 paredes
   rotate: false
-  xy: 1606, 350
+  xy: 1518, 526
   size: 270, 480
   orig: 270, 480
   offset: 0, 0
   index: -1
 restart
   rotate: false
-  xy: 2, 176
+  xy: 511, 834
   size: 1005, 172
   orig: 1005, 172
   offset: 0, 0
   index: -1
 startgame
   rotate: false
-  xy: 1009, 176
+  xy: 672, 660
   size: 830, 172
   orig: 830, 172
+  offset: 0, 0
+  index: -1
+win
+  rotate: false
+  xy: 808, 484
+  size: 616, 174
+  orig: 616, 174
   offset: 0, 0
   index: -1

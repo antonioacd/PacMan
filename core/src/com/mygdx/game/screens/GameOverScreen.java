@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -46,66 +47,51 @@ public class GameOverScreen  extends BaseScreen{
     //Todo 3. Creamos una valiabre contador....
     private int scoreNumber;
 
-    private Stage stage;
-    private PacMan pacMan;
-    private Ghost ghost01, ghost02, ghost03, ghost04;
-    private Image background;
-
-    //Declaramos un mundo
-    private World world;
-
-    //Depuración
-    private Box2DDebugRenderer debugRenderer;
-    private OrthographicCamera worldCamera;
-    //Score Cámara
-    private OrthographicCamera fontCamera;
-    private BitmapFont score;
+    private SpriteBatch batch;
+    private TextureRegion texturaStartGame;
+    private TextureRegion texturaFondo;
+    private boolean touched;
+    private float height, width;
 
     public GameOverScreen(MainGame mainGame) {
         super(mainGame);
-
-        //Inicializamos el mundo dandole la gravedad, como en mi caso, no habra gravedad
-        // le pondre 0,0
-        this.world = new World(new Vector2(0,0), true);
-        //Asignamos la vista al stage
-        FitViewport fitViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
-        this.stage = new Stage(fitViewport);
-
-        //Colocamos la camara, la cual sera estatica
-        this.worldCamera = (OrthographicCamera) this.stage.getCamera();
-        this.debugRenderer = new Box2DDebugRenderer();
+        this.height = Gdx.graphics.getHeight()/3f;
+        this.width = Gdx.graphics.getWidth()/2f;
     }
 
     @Override
     public void render(float delta) {
         //Elimina la imagen anterior anterior
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.input.setInputProcessor(this.stage);
 
-        this.stage.getBatch().setProjectionMatrix(worldCamera.combined);
-        //Hace que no pase de menos de 30 FPS
-        this.stage.act();
-        //Llama a todos los acts de las clases
-        this.world.step(delta, 6, 2);
+        batch.begin();
+        batch.draw(texturaFondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(texturaStartGame,Gdx.graphics.getWidth()/2 - (width/2), Gdx.graphics.getHeight()/2.8f, width, height);
+        batch.end();
+        if (Gdx.input.justTouched() && !touched) {
+            touched = true;
+        }
+        if(touched) {
+            mainGame.setScreen(new GameScreen(mainGame));
+        }
 
-        this.debugRenderer.render(this.world, this.worldCamera.combined);
     }
 
     @Override
     public void show() {
-        //Añadir objetos
+        batch = new SpriteBatch();
+        texturaFondo = mainGame.assetManager.getBgStartFinish();
+        texturaStartGame = mainGame.assetManager.getStartText();
+        touched = false;
     }
 
     @Override
     public void hide() {
-        this.pacMan.detach();
-        this.pacMan.remove();
     }
 
     @Override
     public void dispose() {
-        this.stage.dispose();
-        this.world.dispose();
+        batch.dispose();
     }
 
 }

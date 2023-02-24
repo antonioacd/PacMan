@@ -29,6 +29,10 @@ public class PacMan extends Actor {
     private static final int STATE_NORMAL = 0;
     private static final int STATE_DEAD = 1;
 
+    //Velocidad del PacMan
+
+    private static final float SPEED = 1f;
+
     private int state;
 
     //Declaramos los atributos del PacMan
@@ -118,22 +122,26 @@ public class PacMan extends Actor {
 
             //Dependiendo de los valores de la pulsacion se le asignara una direccion
             if (deltaX > 0 && deltaY > -5 && deltaY < 15){
-                direccion = 1;
+                this.body.setLinearVelocity(SPEED, 0f);
+                this.setRotacion(0);
             }
 
             if (deltaX < 0 && deltaY > -5 && deltaY < 15){
-                direccion = -1;
+                this.body.setLinearVelocity(-SPEED, 0f);
+                this.setRotacion(180);
             }
 
             if (deltaY > 0 && deltaX > -15 && deltaX < 5){
-                direccion = 0;
+                this.body.setLinearVelocity(0f, -SPEED);
+                this.setRotacion(-90);
             }
 
             if (deltaY < 0 && deltaX > -15 && deltaX < 5){
-                direccion = 2;
+                this.body.setLinearVelocity(0f, SPEED);
+                this.setRotacion(90);
             }
 
-            //Dependiendo de la direccion recibida se moveran hacia una direccion determinada
+            /*//Dependiendo de la direccion recibida se moveran hacia una direccion determinada
             switch (direccion) {
                 case -1:
                     this.body.setLinearVelocity(-1f, 0f);
@@ -151,7 +159,7 @@ public class PacMan extends Actor {
                     this.body.setLinearVelocity(0f, 1f);
                     this.setRotacion(90);
                     break;
-            }
+            }*/
 
 
         }

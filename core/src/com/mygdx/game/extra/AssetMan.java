@@ -15,6 +15,7 @@ import static com.mygdx.game.extra.Utils.MUSICBG;
 import static com.mygdx.game.extra.Utils.PACMAN1;
 import static com.mygdx.game.extra.Utils.PACMAN2;
 import static com.mygdx.game.extra.Utils.PACMAN3;
+import static com.mygdx.game.extra.Utils.RESTART_GAME;
 import static com.mygdx.game.extra.Utils.START_GAME;
 import static com.mygdx.game.extra.Utils.WALL;
 
@@ -92,6 +93,7 @@ public class AssetMan {
 
     //Textos del juego
     public TextureRegion getStartText(){return this.textureAtlas.findRegion(START_GAME);}
+    public TextureRegion getFinishDeadText(){return this.textureAtlas.findRegion(RESTART_GAME);}
 
 
 }

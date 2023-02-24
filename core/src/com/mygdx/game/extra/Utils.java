@@ -24,6 +24,7 @@ public class Utils {
     public static final String CHERRY = "cereza";
     public static final String WALL = "paredes";
     public static final String START_GAME = "startgame";
+    public static final String RESTART_GAME = "startgame";
 
     //Musica y efectos de sonido
 

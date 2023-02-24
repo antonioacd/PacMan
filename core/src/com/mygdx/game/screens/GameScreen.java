@@ -563,7 +563,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
                 contadorCherry++;
                 canHide05 = false;
                 comprobarWin();
-            }        }
+            }
+        }
 
         if (areColider(contact, USER_PACMAN, USER_GHOST_01) || areColider(contact, USER_PACMAN, USER_GHOST_02) ||
                 areColider(contact, USER_PACMAN, USER_GHOST_03) || areColider(contact, USER_PACMAN, USER_GHOST_04)) {
