@@ -25,6 +25,6 @@ public class MainGame extends Game {
 		this.gameScreen = new GameScreen(this);
 		this.gameOverScreen = new GameOverScreen(this);
 		this.getReadyScreen = new GetReadyScreen(this);
-		setScreen(this.gameScreen);
+		setScreen(this.getReadyScreen);
 	}
 }

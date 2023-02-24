@@ -22,6 +22,7 @@ public class Utils {
     public static final String GHOST04 = "Ghost04";
     public static final String CHERRY = "cereza";
     public static final String WALL = "paredes";
+    public static final String START_GAME = "startgame";
 
     //Musica y efectos de sonido
 
@@ -42,6 +43,5 @@ public class Utils {
     public static final String USER_CHERRY_04 = "cherry04";
     public static final String USER_CHERRY_05 = "cherry05";
     public static final String USER_WALL = "walls";
-    public static final String USER_EXTERIOR_WALLS = "ewalls";
 
 }

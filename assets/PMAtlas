@@ -1,83 +1,111 @@
 
 PMAtlas.png
-size: 1174, 484
+size: 1908, 697
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 Ghost01
   rotate: false
-  xy: 1076, 354
+  xy: 1811, 681
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost02
   rotate: false
-  xy: 1076, 338
+  xy: 1194, 159
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost03
   rotate: false
-  xy: 1092, 370
+  xy: 1478, 333
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 Ghost04
   rotate: false
-  xy: 1076, 370
+  xy: 2, 25
   size: 14, 14
   orig: 14, 14
   offset: 0, 0
   index: -1
 PacMan01
   rotate: false
-  xy: 1076, 323
+  xy: 1811, 666
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 PacMan02
   rotate: false
-  xy: 1108, 371
+  xy: 18, 26
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 PacMan03
   rotate: false
-  xy: 1092, 355
+  xy: 2, 10
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 cereza
   rotate: false
-  xy: 1092, 341
+  xy: 1827, 683
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
+exit
+  rotate: false
+  xy: 808, 2
+  size: 384, 171
+  orig: 384, 171
+  offset: 0, 0
+  index: -1
 fondo
   rotate: false
-  xy: 2, 2
+  xy: 2, 215
   size: 800, 480
   orig: 800, 480
   offset: 0, 0
   index: -1
+gameover
+  rotate: false
+  xy: 2, 41
+  size: 804, 172
+  orig: 804, 172
+  offset: 0, 0
+  index: -1
+nicetry
+  rotate: false
+  xy: 808, 175
+  size: 668, 172
+  orig: 668, 172
+  offset: 0, 0
+  index: -1
 paredes
   rotate: false
-  xy: 804, 2
+  xy: 1636, 41
   size: 270, 480
   orig: 270, 480
   offset: 0, 0
   index: -1
-paredes02
+restart
   rotate: false
-  xy: 1076, 386
-  size: 96, 96
-  orig: 96, 96
+  xy: 804, 523
+  size: 1005, 172
+  orig: 1005, 172
+  offset: 0, 0
+  index: -1
+startgame
+  rotate: false
+  xy: 804, 349
+  size: 830, 172
+  orig: 830, 172
   offset: 0, 0
   index: -1

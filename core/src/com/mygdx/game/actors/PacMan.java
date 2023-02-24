@@ -121,40 +121,23 @@ public class PacMan extends Actor {
             System.out.println(deltaX + " - " + deltaY);
 
 
-            if (deltaX > 0){
+            if (deltaX > 0 && deltaY > -5 && deltaY < 15){
                 direccion = 1;
             }
 
-            if (deltaX < 0){
+            if (deltaX < 0 && deltaY > -5 && deltaY < 15){
                 direccion = -1;
             }
 
-            if (deltaY > 0){
+            if (deltaY > 0 && deltaX > -15 && deltaX < 5){
                 direccion = 0;
             }
 
-            if (deltaY < 0){
+            if (deltaY < 0 && deltaX > -15 && deltaX < 5){
                 direccion = 2;
             }
-        }
 
-        switch (direccion) {
-            case -1:
-                this.body.setLinearVelocity(-1f, 0f);
-                this.setRotacion(180);
-                break;
-            case 1:
-                this.body.setLinearVelocity(1f, 0f);
-                this.setRotacion(0);
-                break;
-            case 0:
-                this.body.setLinearVelocity(0f, -1f);
-                this.setRotacion(-90);
-                break;
-            case 2:
-                this.body.setLinearVelocity(0f, 1f);
-                this.setRotacion(90);
-                break;
+
         }
     }
 

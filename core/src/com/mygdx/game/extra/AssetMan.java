@@ -14,6 +14,7 @@ import static com.mygdx.game.extra.Utils.MUSICBG;
 import static com.mygdx.game.extra.Utils.PACMAN1;
 import static com.mygdx.game.extra.Utils.PACMAN2;
 import static com.mygdx.game.extra.Utils.PACMAN3;
+import static com.mygdx.game.extra.Utils.START_GAME;
 import static com.mygdx.game.extra.Utils.WALL;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -86,6 +87,9 @@ public class AssetMan {
     public Sound getEatCherrySound(){return this.assetManager.get(EATCHERRY);}
     public Music getEatGhostSound(){return this.assetManager.get(EATGHOST);}
     public Sound getDeadSound(){return this.assetManager.get(DEADSOUND);}
+
+    //Textos del juego
+    public TextureRegion getStartText(){return this.textureAtlas.findRegion(START_GAME);}
 
 
 }

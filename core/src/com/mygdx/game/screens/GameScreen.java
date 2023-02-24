@@ -18,6 +18,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -36,6 +37,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.actors.Cherry;
@@ -168,7 +172,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
         addPacMan();
         addCherry();
         addGhosts();
-        getPacManDireccion();
         addWalls();
 
         bgMusic.setLooping(true);
@@ -204,36 +207,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.stage.addActor(this.pacMan);
     }
 
-    //Metodo para saber la direccion del PacMan
-    public void getPacManDireccion(){
-
-        this.stage.addListener(new InputListener(){
-
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-
-                switch (keycode) {
-                    case Input.Keys.LEFT:
-                        pacMan.setDireccion(-1);
-                        break;
-                    case Input.Keys.RIGHT:
-                        pacMan.setDireccion(1);
-                        break;
-                    case Input.Keys.DOWN:
-                        pacMan.setDireccion(0);
-                        break;
-                    case Input.Keys.UP:
-                        pacMan.setDireccion(2);
-                        break;
-                }
-                return true;
-            }
-        });
-    }
-
     //Metodo para mover el PacMan de arriba a abajo y viceversa
     private void pacManTeleport() {
-
         if (pacMan.getY() < -0.2) {pacMan.arriba(pacMan.getX());}
         if (pacMan.getY() > WORLD_HEIGHT-0.1) {pacMan.abajo(pacMan.getX());}
     }
