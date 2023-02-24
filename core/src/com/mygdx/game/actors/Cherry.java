@@ -44,28 +44,18 @@ public class Cherry extends Actor {
         createFixture(usuario);
     }
 
+    //Metodo para comprobar si esa cereza ya ha sido obtenida y asi no contarla de nuevo
     public boolean isEliminado() {
         return eliminado;
     }
 
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
-    }
 
-    public Body getBody() {
-        return body;
-    }
-
-    //Metodo para crear el cuerpo
+    //Metodo para crear el cuerpo de la cereza
     private void createBody() {
-        //Creamos el body
+        //Creamos el body asignandole una posicion y un tipo
         BodyDef bodyDef = new BodyDef();
-        //Le establecemos la posicion, la cual sera la misma de la del PacMan,
-        // ya que la cojemos del constructor
         bodyDef.position.set(this.position);
-        //Le asignamos un tipo
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        //Lo creamos
         this.body = this.world.createBody(bodyDef);
     }
 
@@ -77,10 +67,11 @@ public class Cherry extends Actor {
 
         //Creamos la fisica
         this.fixture = this.body.createFixture(poligon, 8);
+        //Estahblecems setSensor a true, para que no sea afectada por las fisicas
+        // pero que si detecte colisiones
         this.fixture.setSensor(true);
         //Le asignamos a esta fisica un "nombre" para identificarlo
         this.fixture.setUserData(usuario);
-
         poligon.dispose();
     }
 
@@ -90,12 +81,13 @@ public class Cherry extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //Establecemos la posicion de la fisica restandole la mitad del tamaño del dibujo del PacMan
+        //Establecemos la posicion de la fisica restandole la mitad del tamaño del dibujo de la cereza
         setPosition(body.getPosition().x - (CHERRY_WIDTH/2), body.getPosition().y - (CHERRY_HEIGHT/2));
         //Dibujamos la cereza
         batch.draw(texture, getX(), getY(), CHERRY_WIDTH, CHERRY_HEIGHT);
     }
 
+    //Eliminamos la cerezas del mundo y borramos la fisica
     public void detach() {
         this.body.destroyFixture(this.fixture);
         this.world.destroyBody(this.body);

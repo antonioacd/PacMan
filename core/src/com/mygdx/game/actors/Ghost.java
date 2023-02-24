@@ -24,15 +24,10 @@ public class Ghost extends Actor {
     private static final int STATE_ENABLETODEADTH = 2;
     private static final float SPEED = 1f;
 
-    private int state;
-
-    //Declaramos los atributos del PacMan
-    //private Animation<TextureRegion> pacManAnimation;
+    //Declaramos los atributos del Fantasma
     private TextureRegion texture;
     private Vector2 position;
     private int direction;
-
-    private float stateTime;
 
     //Creamos el mundo
     private World world;
@@ -40,7 +35,7 @@ public class Ghost extends Actor {
     //Creamos el cuerpo del PacMan y la Fisica
     private Body body;
     private Fixture fixture;
-
+    //Guardaremos la posicion antigua para que al chocar con algo, no vaya a la misma direccion
     private Vector2 posAntigua;
 
     public Ghost(World world, TextureRegion texture, Vector2 position, int direccion, String usuario) {
@@ -48,44 +43,22 @@ public class Ghost extends Actor {
         this.texture = texture;
         this.position = position;
         this.world = world;
-        this.stateTime = 0f;
-        this.state = STATE_NORMAL;
         this.direction = direccion;
-
         createBody();
         createFixture(usuario);
     }
 
-    public Vector2 getPosition() {
-        return fixture.getBody().getPosition();
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
+    //Mediante este metod le asignamos la direccion a la que tiene que ir
     public void setDirection(int direction) {
         this.direction = direction;
     }
 
-    public Vector2 getPosAntigua() {
-        return posAntigua;
-    }
-
-    public void setPosAntigua(Vector2 posAntigua) {
-        this.posAntigua = posAntigua;
-    }
-
     //Metodo para crear el cuerpo
     private void createBody() {
-        //Creamos el body
+        //Creamos el body asignandole una posicion y un tipo
         BodyDef bodyDef = new BodyDef();
-        //Le establecemos la posicion, la cual sera la misma de la del PacMan,
-        // ya que la cojemos del constructor
         bodyDef.position.set(this.position);
-        //Le asignamos un tipo
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //Lo creamos
         this.body = this.world.createBody(bodyDef);
     }
 
@@ -94,18 +67,15 @@ public class Ghost extends Actor {
         //Como es un circulo, le damos un radio que sera el tamaño de la fisica
         CircleShape circle = new CircleShape();
         circle.setRadius(GHOST_HEIGHT / 2);
-
-        //PolygonShape poligon = new PolygonShape();
-        //poligon.setAsBox(GHOST_WIDTH, GHOST_HEIGHT);
-
         //Creamos la fisica
         this.fixture = this.body.createFixture(circle, 8);
         //Le asignamos a esta fisica un "nombre" para identificarlo
         this.fixture.setUserData(usuario);
-
         circle.dispose();
     }
 
+    //Estos metodos sirven para mover nuestro fantasma de un lugar a otro,
+    // y se usaran cuando el fantasma se teletransporte
     public void arriba(float xGhost) {
         this.body.setTransform(new Vector2(xGhost + 0.20f, WORLD_HEIGHT), 0);
     }
@@ -117,6 +87,7 @@ public class Ghost extends Actor {
     @Override
     public void act(float delta) {
 
+        //segun la direccion asignada
         switch (direction) {
             case -1:
                 moverAbajo();
@@ -138,17 +109,10 @@ public class Ghost extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-        //Establecemos la posicion de la fisica restandole la mitad del tamaño del dibujo del PacMan
+        //Establecemos la posicion de la fisica restandole la mitad del tamaño del dibujo del fantasma
         setPosition(body.getPosition().x - 0.2f, body.getPosition().y - 0.2f);
-        //Dibujamos el Pacman
+        //Dibujamos el Ghost
         batch.draw(texture, getX(), getY(), GHOST_WIDTH, GHOST_HEIGHT);
-        //batch.draw(this.pacManAnimation.getKeyFrame(stateTime, true), getX(), getY(), PACMAN_WIDTH,PACMAN_WIDTH);
-        //stateTime += Gdx.graphics.getDeltaTime();
-    }
-
-    public void dead() {
-        state = STATE_DEAD;
-        stateTime = 0f;
     }
 
     public void detach() {

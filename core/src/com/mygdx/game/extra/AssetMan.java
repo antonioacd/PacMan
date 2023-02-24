@@ -2,6 +2,7 @@ package com.mygdx.game.extra;
 
 import static com.mygdx.game.extra.Utils.ATLAS_MAP;
 import static com.mygdx.game.extra.Utils.BACKGROUND_IMAGE;
+import static com.mygdx.game.extra.Utils.BACKGROUND_SF;
 import static com.mygdx.game.extra.Utils.CHERRY;
 import static com.mygdx.game.extra.Utils.DEADSOUND;
 import static com.mygdx.game.extra.Utils.EATCHERRY;
@@ -53,6 +54,7 @@ public class AssetMan {
     public TextureRegion getBackground(){
         return this.textureAtlas.findRegion(BACKGROUND_IMAGE);
     }
+    public TextureRegion getBgStartFinish(){return this.textureAtlas.findRegion(BACKGROUND_SF);}
 
     //ANIMACIÓN PÁJARO
     public Animation<TextureRegion> getBirdAnimation(){

@@ -72,14 +72,10 @@ public class PacMan extends Actor {
 
     //Metodo para crear el cuerpo
     private void createBody(){
-        //Creamos el body
+        //Creamos el body asignandole una posicion y un tipo
         BodyDef bodyDef = new BodyDef();
-        //Le establecemos la posicion, la cual sera la misma de la del PacMan,
-        // ya que la cojemos del constructor
         bodyDef.position.set(this.position);
-        //Le asignamos un tipo
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //Lo creamos
         this.body = this.world.createBody(bodyDef);
     }
 
@@ -93,7 +89,6 @@ public class PacMan extends Actor {
         this.fixture = this.body.createFixture(circle, 8);
         //Le asignamos a esta fisica un "nombre" para identificarlo
         this.fixture.setUserData(USER_PACMAN);
-
         circle.dispose();
     }
 
@@ -102,6 +97,8 @@ public class PacMan extends Actor {
         stateTime = 0f;
     }
 
+    //Estos metodos sirven para mover nuestro PacMan de un lugar a otro,
+    // y se usaran cuando el PacMan se teletransporte
     public void arriba(float xPacMan){
         this.body.setTransform(new Vector2(xPacMan + 0.20f,WORLD_HEIGHT), 0);
     }
@@ -113,14 +110,13 @@ public class PacMan extends Actor {
     @Override
     public void act(float delta) {
 
+        //Si se detecta una pulsacion en la pantalla
         if (Gdx.input.isTouched()) {
-            // Move object based on touch movement
+            //Detectamos la posicion de la pulsacion
             float deltaX = Gdx.input.getDeltaX();
             float deltaY = Gdx.input.getDeltaY();
 
-            System.out.println(deltaX + " - " + deltaY);
-
-
+            //Dependiendo de los valores de la pulsacion se le asignara una direccion
             if (deltaX > 0 && deltaY > -5 && deltaY < 15){
                 direccion = 1;
             }
@@ -137,7 +133,7 @@ public class PacMan extends Actor {
                 direccion = 2;
             }
 
-
+            //Dependiendo de la direccion recibida se moveran hacia una direccion determinada
             switch (direccion) {
                 case -1:
                     this.body.setLinearVelocity(-1f, 0f);

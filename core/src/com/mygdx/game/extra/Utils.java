@@ -13,6 +13,7 @@ public class Utils {
     //Identificadores del Atlas
     public static final String ATLAS_MAP = "PMAtlas";
     public static final String BACKGROUND_IMAGE = "fondo";
+    public static final String BACKGROUND_SF = "fondoJuego";
     public static final String PACMAN1 = "PacMan01";
     public static final String PACMAN2 = "PacMan02";
     public static final String PACMAN3 = "PacMan03";
