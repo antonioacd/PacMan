@@ -21,11 +21,9 @@ public class GetReadyScreen extends BaseScreen {
 
     public GetReadyScreen(MainGame mainGame) {
         super(mainGame);
-        this.height = Gdx.graphics.getHeight()/3f;
-        this.width = Gdx.graphics.getWidth()/2f;
+        this.height = Gdx.graphics.getHeight();
+        this.width = Gdx.graphics.getWidth();
         this.musicBG = mainGame.assetManager.getBgStart();
-
-
     }
 
     @Override
@@ -35,7 +33,7 @@ public class GetReadyScreen extends BaseScreen {
 
         batch.begin();
         batch.draw(texturaFondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(texturaStartGame,Gdx.graphics.getWidth()/2 - (width/2), Gdx.graphics.getHeight()/2.8f, width, height);
+        batch.draw(texturaStartGame,Gdx.graphics.getWidth()/2 - (width/2f/2f), Gdx.graphics.getHeight()/2.5f, width/2f, height/4f);
         batch.end();
 
         if (Gdx.input.justTouched() && !touched) {
@@ -65,5 +63,6 @@ public class GetReadyScreen extends BaseScreen {
     @Override
     public void dispose() {
         batch.dispose();
+        musicBG.dispose();
     }
 }

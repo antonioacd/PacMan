@@ -21,8 +21,8 @@ public class GameWinScreen  extends BaseScreen{
 
     public GameWinScreen(MainGame mainGame) {
         super(mainGame);
-        this.height = Gdx.graphics.getHeight()/3f;
-        this.width = Gdx.graphics.getWidth()/2f;
+        this.height = Gdx.graphics.getHeight();
+        this.width = Gdx.graphics.getWidth();
     }
 
     @Override
@@ -32,8 +32,8 @@ public class GameWinScreen  extends BaseScreen{
 
         batch.begin();
         batch.draw(texturaFondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(texturaWin,Gdx.graphics.getWidth()/2 - (width/2), Gdx.graphics.getHeight()/2.8f, width, height);
-        batch.draw(texturaRestart,Gdx.graphics.getWidth()/2 - (width/4), Gdx.graphics.getHeight()/5f, width/2, height/2);
+        batch.draw(texturaWin,Gdx.graphics.getWidth()/2 - (width/3f), Gdx.graphics.getHeight()/2.8f, width/1.5f, height/2.5f);
+        batch.draw(texturaRestart,Gdx.graphics.getWidth()/2 - (width/4f), Gdx.graphics.getHeight()/5f, width/2f, height/4f);
         batch.end();
         if (Gdx.input.justTouched() && !touched) {
             touched = true;

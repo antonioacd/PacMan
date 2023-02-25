@@ -61,14 +61,7 @@ public class GameScreen extends BaseScreen implements ContactListener {
     //Declaramos un mundo
     private World world;
 
-    //Depuración
-    private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera worldCamera;
-    //Score Cámara
-    private OrthographicCamera fontCamera;
-    private BitmapFont score;
-
-    Vector2 posicionAntGhost;
 
     int dirGhost01Ultima = 1;
     int dirGhost01Anterior = 1;
@@ -79,7 +72,11 @@ public class GameScreen extends BaseScreen implements ContactListener {
     int dirGhost04Ultima = -1;
     int dirGhost04Anterior = -1;
 
-    float tiempo = 0;
+    private boolean canHide01 = true;
+    private boolean canHide02 = true;
+    private boolean canHide03 = true;
+    private boolean canHide04 = true;
+    private boolean canHide05 = true;
 
     Walls wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18, wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36, wall37, wall38, wall39, wall40, wall41, wall42, wall43;
 
@@ -107,7 +104,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
         //Colocamos la camara, la cual sera estatica
         this.worldCamera = (OrthographicCamera) this.stage.getCamera();
-        this.debugRenderer = new Box2DDebugRenderer();
+        //this.debugRenderer = new Box2DDebugRenderer();
+
 
         //Sonidos
         bgMusic = this.mainGame.assetManager.getMusicBackground();
@@ -118,6 +116,14 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
         addPositions();
     }
+
+    /**
+     * <h1>Método addPositions de la clase GameScreen</h1>
+     *
+     *  En este metodo guardamos una serie de posiciones dentro de un ArrayList
+     *  a las cuales accederemos mas tarde para determinar la ubicacion de cada
+     *  cereza en el mundo.
+     */
 
     public void addPositions(){
 
@@ -140,7 +146,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
         listRndPos.add(new Vector2(4.8f, 4.2f));
 
     }
-
 
     ///////////////////////////////////////////////////
     /////////////////MÉTODOS PROPIOS///////////////////
@@ -181,8 +186,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
     public void hide() {
         this.pacMan.detach();
         this.pacMan.remove();
-        this.cherry01.detach();
-        this.cherry01.remove();
         this.bgMusic.stop();
     }
 
@@ -196,7 +199,13 @@ public class GameScreen extends BaseScreen implements ContactListener {
     //////////////////////PACMAN///////////////////////
     ///////////////////////////////////////////////////
 
-    //Añadimos el PacMan
+    /**
+     * <h1>Método addPacMan de la clase GameScreen</h1>
+     *
+     *  En el se crea la animacion para el PacMan, tambien se crea el Actor
+     *  y se introduce en el mundo
+     */
+
     public void addPacMan() {
         //Asignamos la animacion a la que obtenemos del assetManager
         Animation<TextureRegion> pacManSprite = mainGame.assetManager.getBirdAnimation();
@@ -206,7 +215,13 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.stage.addActor(this.pacMan);
     }
 
-    //Metodo para mover el PacMan de arriba a abajo y viceversa
+    /**
+     * <h1>Método pacManTeleport de la clase GameScreen</h1>
+     *
+     *  Este método establecera una nueva posicion del actor en caso de salirse del mapa,
+     *  de esta manera da la impresión de un teletransporte del actor.
+     */
+
     private void pacManTeleport() {
         if (pacMan.getY() < -0.2) {pacMan.arriba(pacMan.getX());}
         if (pacMan.getY() > WORLD_HEIGHT-0.1) {pacMan.abajo(pacMan.getX());}
@@ -216,7 +231,12 @@ public class GameScreen extends BaseScreen implements ContactListener {
     //////////////////////GHOSTS///////////////////////
     ///////////////////////////////////////////////////
 
-    //Añadimos los fantasmas
+    /**
+     * <h1>Método addGhosts de la clase GameScreen</h1>
+     *
+     * En este método se crean los fantasmas y se añaden al mundo
+     */
+
     public void addGhosts(){
         TextureRegion redGhost = mainGame.assetManager.getRedGhost();
         this.ghost01 = new Ghost(this.world, redGhost, new Vector2(1.55f, 3.55f), 1,USER_GHOST_01);
@@ -237,21 +257,33 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.stage.addActor(this.ghost04);
     }
 
-    //Metodo que comprueba que los fantasmas no esten parados
-    //(dentro de este metodo se realiza el draw, y este metodo se llama en el render)
+    /**
+     * <h1>Método seeGhosts de la clase GameScreen</h1>
+     *
+     *  Este método comprueba que los fantasmas no esten parados,
+     *  comparando su posicin anterior con la actual
+     *  (Dentro de este método se realiza el draw, y este método se llama en el render)
+     */
+
     public void seeGhosts(){
 
         Vector2 xAnteriorG1 = new Vector2(this.ghost01.getX(), this.ghost01.getY());
         Vector2 xAnteriorG2 = new Vector2(this.ghost02.getX(), this.ghost02.getY());
         Vector2 xAnteriorG3 = new Vector2(this.ghost03.getX(), this.ghost03.getY());
         Vector2 xAnteriorG4 = new Vector2(this.ghost04.getX(), this.ghost04.getY());
+
         int num1, num2, num3, num4;
         this.stage.draw();
+
+        //Genera un numero aleatorio entre las posibles posiciones de PacMan,
+        // sin que sea ni la ultima direccion ni la penultima
 
         if (xAnteriorG1.equals(new Vector2(this.ghost01.getX(), this.ghost01.getY()))) {
             do {
                 num1 = MathUtils.random(-1,2);
             }while (dirGhost01Anterior == num1 && dirGhost01Ultima == num1);
+            dirGhost01Anterior = dirGhost01Ultima;
+            dirGhost01Ultima = num1;
             this.ghost01.setDirection(num1);
         }
 
@@ -259,6 +291,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
             do {
                 num2 = MathUtils.random(-1,2);
             }while (dirGhost02Anterior == num2 && dirGhost02Ultima == num2);
+            dirGhost02Anterior = dirGhost02Ultima;
+            dirGhost02Ultima = num2;
             this.ghost02.setDirection(num2);
         }
 
@@ -266,6 +300,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
             do {
                 num3 = MathUtils.random(-1,2);
             }while (dirGhost03Anterior == num3 && dirGhost03Ultima == num3);
+            dirGhost03Anterior = dirGhost03Ultima;
+            dirGhost03Ultima = num3;
             this.ghost03.setDirection(num3);
         }
 
@@ -273,11 +309,19 @@ public class GameScreen extends BaseScreen implements ContactListener {
             do {
                 num4 = MathUtils.random(-1,2);
             }while (dirGhost04Anterior == num4 && dirGhost04Ultima == num4);
+            dirGhost04Anterior = dirGhost04Ultima;
+            dirGhost04Ultima = num4;
             this.ghost04.setDirection(num4);
         }
     }
 
-    //Método para mover los Fantasmas de arriba a abajo y viceversa
+    /**
+     * <h1>Método ghostsTeleport de la clase GameScreen</h1>
+     *
+     *  Este método establecera una nueva posicion del actor en caso de salirse del mapa,
+     *  de esta manera da la impresión de un teletransporte del actor.
+     */
+
     public void ghostsTeleport(){
 
         if (pacMan.getY() < -0.2) {pacMan.arriba(pacMan.getX());}
@@ -301,7 +345,13 @@ public class GameScreen extends BaseScreen implements ContactListener {
     //////////////////////ENTORNO//////////////////////
     ///////////////////////////////////////////////////
 
-    //Añadimos el fondo
+
+    /**
+     * <h1>Método addBackground de la clase GameScreen</h1>
+     *
+     *  Sirve para añadir la imagen de fondo de nuestro mundo
+     */
+
     public void addBackground() {
         //Obtenemos la imagen
         this.background = new Image(mainGame.assetManager.getBackground());
@@ -309,11 +359,16 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.background.setPosition(0, 0);
         //Le asignamos el tamaño
         this.background.setSize(WORLD_WIDTH, WORLD_HEIGHT);
-        //La añadimos
+        //La añadimos al mundo
         this.stage.addActor(this.background);
     }
 
-    //Método que añade las paredes del mapa
+    /**
+     * <h1>Método addWalls de la clase GameScreen</h1>
+     *
+     *  Método que crea las paredes y las añade al mapa
+     */
+
     public void addWalls(){
 
         TextureRegion wall = mainGame.assetManager.getWall();
@@ -348,7 +403,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.wall10 = new Walls(this.world, wall, new Vector2(6.8f,0.9f), 0.1f,0.45f);
         this.stage.addActor(wall10);
 
-
         this.wall11 = new Walls(this.world, wall, new Vector2(1.75f,2.4f), 0.45f,0.1f);
         this.stage.addActor(wall11);
 
@@ -380,6 +434,7 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
         this.wall20 = new Walls(this.world, wall, new Vector2(4.70f,0.9f), 0.60f,0.1f);
         this.stage.addActor(wall20);
+
         //Escalones arriba y abajo (los quito porque hacen esquina)
 
         this.wall21 = new Walls(this.world, wall, new Vector2(2.6f,4.65f), 0.85f,0.2f);
@@ -414,9 +469,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
         this.stage.addActor(wall32);
         this.wall33 = new Walls(this.world, wall, new Vector2(4.48f,2.7f), 0.27f,0.05f);
         this.stage.addActor(wall33);
-
-        //
-
         this.wall34 = new Walls(this.world, wall, new Vector2(2.95f,2.4f), 0.30f,0.1f);
         this.stage.addActor(wall34);
         this.wall35 = new Walls(this.world, wall, new Vector2(5.05f,2.4f), 0.30f,0.1f);
@@ -446,6 +498,16 @@ public class GameScreen extends BaseScreen implements ContactListener {
     //////////////////////CHERRIES//////////////////////
     ///////////////////////////////////////////////////
 
+    /**
+     * <h1>Método posRnd de la clae GameScreen</h1>
+     *
+     *  Accede al ArrayList donde anteriormente guardamos las posiciones posibles de las cerezas
+     *  y elige uno aleatoriamente, seguidamente se borra el obeto que habia en esa posicion elegida
+     *  de la lista para que no se repita, y no se creeen varias cerezas en el mism lugar
+     *
+     * @return Vector2, es la posicion elegida para la cereza
+     */
+
     //Método que nos permite obtener una posicion aleatoria para la cereza
     public Vector2 posRnd(){
 
@@ -457,18 +519,23 @@ public class GameScreen extends BaseScreen implements ContactListener {
         return posicionElegida;
     }
 
-    //Añadimos las cerezas con una posicion aleatoria llamando al metodo anterior
+    /**
+     * <h1>Método addCherry de la clase GameScreen</h1>
+     *
+     *  Método para crear las cerezas llamando al metodo anterior y añadirlas al mundo
+     */
+
     public void addCherry() {
-        //Asignamos la animacion a la que obtenemos del assetManager
+        //Asignamos la textura a la que obtenemos del assetManager
         TextureRegion cherry = mainGame.assetManager.getCherry();
 
-        //Creamos el pacman asignandole el mundo y la posición
+        //Creamos la cereza asignandole el mundo y la posición con el metodo anteriormente mencionado (posRnd())
         this.cherry01 = new Cherry(this.world, cherry, posRnd(), USER_CHERRY_01);
         this.cherry02 = new Cherry(this.world, cherry, posRnd(), USER_CHERRY_02);
         this.cherry03 = new Cherry(this.world, cherry, posRnd(), USER_CHERRY_03);
         this.cherry04 = new Cherry(this.world, cherry, posRnd(), USER_CHERRY_04);
         this.cherry05 = new Cherry(this.world, cherry, posRnd(), USER_CHERRY_05);
-        //Añadimos la cereza*/
+        //Añadimos la cereza
         this.stage.addActor(this.cherry01);
         this.stage.addActor(this.cherry02);
         this.stage.addActor(this.cherry03);
@@ -479,6 +546,13 @@ public class GameScreen extends BaseScreen implements ContactListener {
     ///////////////////////////////////////////////////
     //////////////////////COLISIONES///////////////////
     ///////////////////////////////////////////////////
+
+    /**
+     * <h1>Método comprobarWin de la claes GameScreen</h1>
+     *
+     *  Este método comprueba si el contador de cerezas recogidas es igual a 5
+     *  cada vez que se produce una colision de el pacman con alguna cereza
+     */
 
     public void comprobarWin(){
         if (contadorCherry == 5){
@@ -494,6 +568,16 @@ public class GameScreen extends BaseScreen implements ContactListener {
         }
     }
 
+    /**
+     * <h1>Método areColider de la clase GameScreen</h1>
+     *
+     * @param contact obtiene el contacto que se ha producido
+     * @param objA es uno de los objetos del cual queremos detectar la colision
+     * @param objB es el otro objeto que colisiona
+     * @return boolean con el resultado de la colision, de ser asi, es decir,
+     *          que hayan colisionado, devolvera TRUE
+     */
+
     private boolean areColider(Contact contact, Object objA, Object objB) {
 
         Object userDataA = contact.getFixtureA().getUserData();
@@ -507,12 +591,27 @@ public class GameScreen extends BaseScreen implements ContactListener {
                 (contact.getFixtureA().getUserData().equals(objB) && contact.getFixtureB().getUserData().equals(objA));
     }
 
-    private boolean canHide01 = true;
-    private boolean canHide02 = true;
-    private boolean canHide03 = true;
-    private boolean canHide04 = true;
-    private boolean canHide05 = true;
 
+    /**
+     * <h1>Método beginContact de la clase GameScreen</h1>
+     *
+     * Este metodo determina las acciones segun entre quien se haga el contacto,
+     * en este caso, si el contacto es PacMan - Cherry, se elimina la cereza y reproduce
+     * el sonido de recoger una cereza, tambien se asegura de que esa cereza no pueda
+     * eliminarse de nuevo, y finalmente llama al metodo comprobar win para comprobar
+     * si se ha alcanzado el limite maximo.
+     *
+     * En el siguiente caso si la colision se produce entre PacMan - Ghost,
+     * se reproduce el sonido de muerte del PacMan y se llama a la clase GameOverScreen
+     * para mostrar la pantalla de game over
+     *
+     * Y en el ultimo caso, si la colision se produce entre Ghost - Wall,
+     * el fantasma adopta una nueva posicion que no sea la ultima ni la penultima
+     *
+     *
+     * @param contact es de tipo parametro  y nos servirá para pasarlo
+     *                como parámetro al método anterior (areColider)
+     */
 
     //Método que se llamará cada vez que se produzca cualquier contacto
     @Override
@@ -566,12 +665,11 @@ public class GameScreen extends BaseScreen implements ContactListener {
             }
         }
 
+
         if (areColider(contact, USER_PACMAN, USER_GHOST_01) || areColider(contact, USER_PACMAN, USER_GHOST_02) ||
                 areColider(contact, USER_PACMAN, USER_GHOST_03) || areColider(contact, USER_PACMAN, USER_GHOST_04)) {
             pacMan.dead();
             deadSound.play();
-            //this.hide();
-            //Todo 8.4 Se lanza la secuencia de acciones,cuya última será el pasar a la ventana de GameOverScreen
             this.stage.addAction(Actions.sequence(
                     Actions.delay(0f),
                     Actions.run(new Runnable() {

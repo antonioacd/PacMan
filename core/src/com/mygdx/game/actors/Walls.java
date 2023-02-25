@@ -27,7 +27,7 @@ public class Walls extends Actor {
 
     private World world;
 
-    //Todo 7 Constructor con mundo textura y posicion
+
     public Walls(World world, TextureRegion texture, Vector2 position, float width, float height) {
         this.world = world;
         this.texture = texture;
@@ -63,7 +63,6 @@ public class Walls extends Actor {
         this.fixtureDown.setUserData(USER_WALL);
     }
 
-    //Todo 10. Sobrecargamos métodos act y draw
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -78,7 +77,6 @@ public class Walls extends Actor {
         batch.draw(texture, getX(),getY(), wallWidth*2f, wallHeight*2f);
     }
 
-    //Todo 11. Creamos detach para liberar recursos
     public void detach(){
         bodyDown.destroyFixture(fixtureDown);
         world.destroyBody(bodyDown);

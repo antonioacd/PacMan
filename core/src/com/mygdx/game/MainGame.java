@@ -28,6 +28,6 @@ public class MainGame extends Game {
 		this.gameOverScreen = new GameOverScreen(this);
 		this.getReadyScreen = new GetReadyScreen(this);
 		this.getWinScreen = new GameWinScreen(this);
-		setScreen(this.getReadyScreen);
+		setScreen(this.getWinScreen);
 	}
 }
