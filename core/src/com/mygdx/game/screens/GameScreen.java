@@ -15,31 +15,22 @@ import static com.mygdx.game.extra.Utils.WORLD_HEIGHT;
 import static com.mygdx.game.extra.Utils.WORLD_WIDTH;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.actors.Cherry;
@@ -50,8 +41,6 @@ import com.mygdx.game.actors.Walls;
 import java.util.ArrayList;
 
 public class GameScreen extends BaseScreen implements ContactListener {
-
-    private int scoreNumber;
 
     private Stage stage;
     private PacMan pacMan;
@@ -153,7 +142,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
     @Override
     public void render(float delta) {
-        //Elimina la imagen anterior anterior
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.input.setInputProcessor(this.stage);
 
@@ -561,7 +549,7 @@ public class GameScreen extends BaseScreen implements ContactListener {
                     Actions.run(new Runnable() {
                         @Override
                         public void run() {
-                            mainGame.setScreen(mainGame.getWinScreen);
+                            mainGame.setScreen(mainGame.gameWinScreen);
                         }
                     })
             ));

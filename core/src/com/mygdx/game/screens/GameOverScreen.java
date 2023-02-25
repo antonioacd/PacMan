@@ -9,9 +9,6 @@ import com.mygdx.game.MainGame;
 
 public class GameOverScreen  extends BaseScreen{
 
-    //Todo 3. Creamos una valiabre contador....
-    private int scoreNumber;
-
     private SpriteBatch batch;
     private TextureRegion texturaGameOver;
     private TextureRegion texturaFondo;
@@ -27,12 +24,11 @@ public class GameOverScreen  extends BaseScreen{
 
     @Override
     public void render(float delta) {
-        //Elimina la imagen anterior anterior
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         batch.draw(texturaFondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(texturaGameOver,Gdx.graphics.getWidth()/2 - (width/3f), Gdx.graphics.getHeight()/2.8f, width/1.5f, height/2.5f);
+        batch.draw(texturaGameOver,Gdx.graphics.getWidth()/2 - (width/3f), Gdx.graphics.getHeight()/2.3f, width/1.5f, height/2.5f);
         batch.draw(texturaRestart,Gdx.graphics.getWidth()/2 - (width/4f), Gdx.graphics.getHeight()/5f, width/2f, height/4f);
         batch.end();
         if (Gdx.input.justTouched() && !touched) {

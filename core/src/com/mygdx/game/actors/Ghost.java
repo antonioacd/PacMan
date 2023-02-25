@@ -32,7 +32,7 @@ public class Ghost extends Actor {
     //Creamos el mundo
     private World world;
 
-    //Creamos el cuerpo del PacMan y la Fisica
+    //Creamos el cuerpo del Ghost y la Fisica
     private Body body;
     private Fixture fixture;
     //Guardaremos la posicion antigua para que al chocar con algo, no vaya a la misma direccion

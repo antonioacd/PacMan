@@ -15,14 +15,9 @@ public class Cherry extends Actor {
     private static float CHERRY_WIDTH = 0.4f;
     private static float CHERRY_HEIGHT = 0.4f;
 
-    //Declaramos los estados posibles del personaje, que sera, vivo o muerto
-    private static final int STATE_NORMAL = 0;
-    private static final int STATE_DEAD = 1;
-
     private boolean eliminado;
 
-    //Declaramos los atributos del PacMan
-    //private Animation<TextureRegion> pacManAnimation;
+    //Declaramos los atributos de la cereza
     private TextureRegion texture;
     private Vector2 position;
 

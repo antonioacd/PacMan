@@ -10,8 +10,6 @@ import com.mygdx.game.MainGame;
 
 public class GetReadyScreen extends BaseScreen {
 
-    private int scoreNumber;
-
     private SpriteBatch batch;
     private TextureRegion texturaStartGame;
     private TextureRegion texturaFondo;
@@ -28,12 +26,11 @@ public class GetReadyScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
-        //Elimina la imagen anterior anterior
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         batch.draw(texturaFondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(texturaStartGame,Gdx.graphics.getWidth()/2 - (width/2f/2f), Gdx.graphics.getHeight()/2.5f, width/2f, height/4f);
+        batch.draw(texturaStartGame,Gdx.graphics.getWidth()/2 - (width/4f), Gdx.graphics.getHeight()/2.5f, width/2f, height/4f);
         batch.end();
 
         if (Gdx.input.justTouched() && !touched) {
