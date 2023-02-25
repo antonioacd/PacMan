@@ -91,6 +91,7 @@ public class PacMan extends Actor {
 
         //Creamos la fisica
         this.fixture = this.body.createFixture(circle, 8);
+        this.fixture.setFriction(0);
         //Le asignamos a esta fisica un "nombre" para identificarlo
         this.fixture.setUserData(USER_PACMAN);
         circle.dispose();
@@ -160,7 +161,6 @@ public class PacMan extends Actor {
                     this.setRotacion(90);
                     break;
             }*/
-
 
         }
     }

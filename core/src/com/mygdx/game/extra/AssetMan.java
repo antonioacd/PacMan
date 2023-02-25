@@ -15,9 +15,12 @@ import static com.mygdx.game.extra.Utils.MUSICBG;
 import static com.mygdx.game.extra.Utils.PACMAN1;
 import static com.mygdx.game.extra.Utils.PACMAN2;
 import static com.mygdx.game.extra.Utils.PACMAN3;
+import static com.mygdx.game.extra.Utils.GAMEOVER_GAME;
 import static com.mygdx.game.extra.Utils.RESTART_GAME;
 import static com.mygdx.game.extra.Utils.START_GAME;
+import static com.mygdx.game.extra.Utils.STARTBG;
 import static com.mygdx.game.extra.Utils.WALL;
+import static com.mygdx.game.extra.Utils.WIN_GAME;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -42,6 +45,7 @@ public class AssetMan {
         assetManager.load(EATCHERRY, Sound.class);
         assetManager.load(EATGHOST, Sound.class);
         assetManager.load(DEADSOUND, Sound.class);
+        assetManager.load(STARTBG, Music.class);
 
         //Cargamos el Atlas
         assetManager.load(ATLAS_MAP, TextureAtlas.class);
@@ -90,10 +94,13 @@ public class AssetMan {
     public Sound getEatCherrySound(){return this.assetManager.get(EATCHERRY);}
     public Music getEatGhostSound(){return this.assetManager.get(EATGHOST);}
     public Sound getDeadSound(){return this.assetManager.get(DEADSOUND);}
+    public Music getBgStart(){return this.assetManager.get(STARTBG);}
 
     //Textos del juego
     public TextureRegion getStartText(){return this.textureAtlas.findRegion(START_GAME);}
-    public TextureRegion getFinishDeadText(){return this.textureAtlas.findRegion(RESTART_GAME);}
+    public TextureRegion getFinishDeadText(){return this.textureAtlas.findRegion(GAMEOVER_GAME);}
+    public TextureRegion getWin(){return this.textureAtlas.findRegion(WIN_GAME);}
+    public TextureRegion getRestart(){return this.textureAtlas.findRegion(RESTART_GAME);}
 
 
 }

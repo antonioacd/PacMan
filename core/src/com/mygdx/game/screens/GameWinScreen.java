@@ -1,31 +1,28 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.MainGame;
 
 
-public class GetReadyScreen extends BaseScreen {
+public class GameWinScreen  extends BaseScreen{
 
+    //Todo 3. Creamos una valiabre contador....
     private int scoreNumber;
 
     private SpriteBatch batch;
-    private TextureRegion texturaStartGame;
+    private TextureRegion texturaWin;
     private TextureRegion texturaFondo;
+    private TextureRegion texturaRestart;
     private boolean touched;
-    private Music musicBG;
     private float height, width;
 
-    public GetReadyScreen(MainGame mainGame) {
+    public GameWinScreen(MainGame mainGame) {
         super(mainGame);
         this.height = Gdx.graphics.getHeight()/3f;
         this.width = Gdx.graphics.getWidth()/2f;
-        this.musicBG = mainGame.assetManager.getBgStart();
-
-
     }
 
     @Override
@@ -35,14 +32,13 @@ public class GetReadyScreen extends BaseScreen {
 
         batch.begin();
         batch.draw(texturaFondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(texturaStartGame,Gdx.graphics.getWidth()/2 - (width/2), Gdx.graphics.getHeight()/2.8f, width, height);
+        batch.draw(texturaWin,Gdx.graphics.getWidth()/2 - (width/2), Gdx.graphics.getHeight()/2.8f, width, height);
+        batch.draw(texturaRestart,Gdx.graphics.getWidth()/2 - (width/4), Gdx.graphics.getHeight()/5f, width/2, height/2);
         batch.end();
-
         if (Gdx.input.justTouched() && !touched) {
             touched = true;
         }
         if(touched) {
-            musicBG.stop();
             mainGame.setScreen(new GameScreen(mainGame));
         }
 
@@ -52,10 +48,9 @@ public class GetReadyScreen extends BaseScreen {
     public void show() {
         batch = new SpriteBatch();
         texturaFondo = mainGame.assetManager.getBgStartFinish();
-        texturaStartGame = mainGame.assetManager.getStartText();
+        texturaWin = mainGame.assetManager.getWin();
+        texturaRestart = mainGame.assetManager.getRestart();
         touched = false;
-        musicBG.setLooping(true);
-        musicBG.play();
     }
 
     @Override
@@ -66,4 +61,6 @@ public class GetReadyScreen extends BaseScreen {
     public void dispose() {
         batch.dispose();
     }
+
 }
+

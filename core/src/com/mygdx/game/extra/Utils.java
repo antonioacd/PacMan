@@ -24,7 +24,9 @@ public class Utils {
     public static final String CHERRY = "cereza";
     public static final String WALL = "paredes";
     public static final String START_GAME = "startgame";
-    public static final String RESTART_GAME = "startgame";
+    public static final String GAMEOVER_GAME = "gameover";
+    public static final String WIN_GAME = "win";
+    public static final String RESTART_GAME = "restart";
 
     //Musica y efectos de sonido
 
@@ -32,6 +34,7 @@ public class Utils {
     public static final String EATCHERRY = "comerFruta.mp3";
     public static final String EATGHOST = "comeFantasma.mp3";
     public static final String DEADSOUND = "muertePacMan.mp3";
+    public static final String STARTBG = "cancioninicio.mp3";
 
     //Identificador de cuerpos
     public static final String USER_PACMAN = "pacMan";

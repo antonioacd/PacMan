@@ -51,7 +51,6 @@ import java.util.ArrayList;
 
 public class GameScreen extends BaseScreen implements ContactListener {
 
-    //Todo 3. Creamos una valiabre contador....
     private int scoreNumber;
 
     private Stage stage;
@@ -488,7 +487,7 @@ public class GameScreen extends BaseScreen implements ContactListener {
                     Actions.run(new Runnable() {
                         @Override
                         public void run() {
-                            mainGame.setScreen(mainGame.gameOverScreen);
+                            mainGame.setScreen(mainGame.getWinScreen);
                         }
                     })
             ));
@@ -545,7 +544,8 @@ public class GameScreen extends BaseScreen implements ContactListener {
                 contadorCherry++;
                 canHide03 = false;
                 comprobarWin();
-            }        }
+            }
+        }
 
         if (areColider(contact,USER_CHERRY_04,USER_PACMAN)){
             if (canHide04 == true && cherry04.isEliminado() == false){
@@ -568,7 +568,6 @@ public class GameScreen extends BaseScreen implements ContactListener {
 
         if (areColider(contact, USER_PACMAN, USER_GHOST_01) || areColider(contact, USER_PACMAN, USER_GHOST_02) ||
                 areColider(contact, USER_PACMAN, USER_GHOST_03) || areColider(contact, USER_PACMAN, USER_GHOST_04)) {
-            System.out.println("Choque");
             pacMan.dead();
             deadSound.play();
             //this.hide();
