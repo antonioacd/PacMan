@@ -5,6 +5,6 @@ Características del juego PacMan:
 
 - Controles sencillos: Desliza tu dedo en la dirección deseada en la pantalla para mover a PacMan. La jugabilidad es intuitiva y diseñada para adaptarse a la pantalla táctil de tu dispositivo móvil.
 
-- Objetivo principal: Tu objetivo es comer todas las cerezas esparcidas por el laberinto antes de que los fantasmas te atrapen. Acumula puntos y trata de obtener la mayor puntuación posible.
+- Objetivo principal: Tu objetivo es comer todas las cerezas esparcidas por el laberinto antes de que los fantasmas te atrapen.
 
-- Estrategia y evasión: Los fantasmas te persiguen mientras avanzas por el laberinto. Utiliza tu habilidad para evitarlos, aprovecha los pasajes secretos y encuentra la mejor ruta para recolectar las cerezas.
+- Estrategia y evasión: Los fantasmas te persiguen mientras avanzas por el laberinto. Aprovecha los pasajes secretos y encuentra la mejor ruta para recolectar las cerezas.
